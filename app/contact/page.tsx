@@ -8,6 +8,8 @@ import Image from 'next/image';
 import { Phone, Mail, MapPin, Send, MessageCircle } from 'lucide-react';
 import { SITE, getWhatsAppUrl } from '@/lib/site-config';
 
+import { saveAdminInquiry } from '@/lib/store/admin-store';
+
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const [contactData, setContactData] = useState({
@@ -20,6 +22,13 @@ export default function ContactPage() {
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
+
+    saveAdminInquiry({
+      fullName: contactData.fullName,
+      phone: contactData.phone,
+      weddingDate: contactData.weddingDate,
+      notes: contactData.notes,
+    });
 
     const message = `
  Namaste! New Inquiry for *SID Events*.

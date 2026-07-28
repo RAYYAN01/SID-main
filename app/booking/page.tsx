@@ -8,6 +8,7 @@ import { GoldButton } from '@/components/ui/gold-button';
 import { ShieldCheck } from 'lucide-react';
 
 import { getWhatsAppBookingRequestUrl } from '@/lib/whatsapp';
+import { saveAdminQuote } from '@/lib/store/admin-store';
 
 export default function BookingPage() {
   const router = useRouter();
@@ -31,6 +32,26 @@ export default function BookingPage() {
 
     const refCode = `BK-${Math.floor(1000 + Math.random() * 9000)}`;
     const waUrl = getWhatsAppBookingRequestUrl(formData, state, refCode, '918858362367');
+
+    const selectedCount = Object.keys(state.selectedServices || {}).length;
+    const estCost = (state.catering?.guestCount || 500) * 350 + selectedCount * 12000 + 45000;
+
+    saveAdminQuote({
+      refCode,
+      customerName: formData.fullName,
+      customerPhone: formData.phone,
+      customerEmail: formData.email,
+      weddingDate: formData.weddingDate,
+      venueCity: formData.venueCity,
+      venueAddress: formData.venueAddress,
+      guestCount: state.catering?.guestCount || 500,
+      cateringTier: state.catering?.packageTier || 'standard',
+      photographyTier: state.photography?.packageTier || 'standard',
+      purohitTier: state.purohit?.packageTier || 'standard',
+      selectedServicesCount: selectedCount,
+      estimatedCost: estCost,
+      notes: formData.notes,
+    });
 
     setTimeout(() => {
       setIsSubmitting(false);
