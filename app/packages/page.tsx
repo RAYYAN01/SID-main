@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { CheckCircle2, Layers } from 'lucide-react';
+import { CheckCircle2, Layers, ChevronUp, ChevronDown } from 'lucide-react';
 import { GoldButton } from '@/components/ui/gold-button';
 import { GlassCard } from '@/components/ui/glass-card';
 import { TraditionalBorder } from '@/components/ui/traditional-border';

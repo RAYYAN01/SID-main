@@ -51,6 +51,15 @@ import {
   Check,
 } from 'lucide-react';
 
+interface AdminPackageFormInput extends Partial<StandardPackage> {
+  decorationSummary?: string;
+  cateringSummary?: string;
+  photographySummary?: string;
+  makeupSummary?: string;
+  purohitSummary?: string;
+  entertainmentSummary?: string;
+}
+
 export default function AdminDashboardPage() {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -80,7 +89,7 @@ export default function AdminDashboardPage() {
     description: '',
   });
 
-  const [pkgForm, setPkgForm] = useState<Partial<StandardPackage>>({
+  const [pkgForm, setPkgForm] = useState<AdminPackageFormInput>({
     name: '',
     tagline: '',
     tier: 'gold',
@@ -184,13 +193,12 @@ export default function AdminDashboardPage() {
         basePrice: Number(pkgForm.basePrice),
         guestCapacity: Number(pkgForm.guestCapacity) || 500,
         description: pkgForm.description || '',
-        decorationSummary: pkgForm.decorationSummary || '',
-        cateringSummary: pkgForm.cateringSummary || '',
-        photographySummary: pkgForm.photographySummary || '',
-        makeupSummary: pkgForm.makeupSummary || '',
-        purohitSummary: pkgForm.purohitSummary || '',
-        entertainmentSummary: pkgForm.entertainmentSummary || '',
-        popular: false,
+        featuredInclusions: [
+          pkgForm.decorationSummary || 'Mandapam Decor',
+          pkgForm.cateringSummary || 'Banana Leaf Sadhya',
+          pkgForm.photographySummary || '4K Cinematic Photography',
+        ],
+        isPopular: false,
       });
       setPackages(updated);
       setIsNewPackageModal(false);

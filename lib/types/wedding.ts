@@ -21,6 +21,8 @@ export interface WeddingService {
   subCategory?: 'home_functions' | 'wedding_hall' | 'floral_items' | 'traditional_services' | 'entertainment';
 }
 
+export type Service = WeddingService;
+
 export interface StandardPackageBreakdown {
   decoration: string;
   catering: string;
