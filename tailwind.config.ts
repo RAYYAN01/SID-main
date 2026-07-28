@@ -51,9 +51,12 @@ const config: Config = {
         },
       },
       fontFamily: {
+        heading: ["var(--font-playfair)", "Georgia", "serif"],
         playfair: ["var(--font-playfair)", "Georgia", "serif"],
-        outfit: ["var(--font-outfit)", "sans-serif"],
-        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
+        script: ["var(--font-great-vibes)", "cursive"],
+        cursive: ["var(--font-great-vibes)", "cursive"],
+        body: ["var(--font-jakarta)", "system-ui", "sans-serif"],
+        sans: ["var(--font-jakarta)", "system-ui", "sans-serif"],
       },
       boxShadow: {
         "gold-glow": "0 10px 40px -10px rgba(201, 162, 39, 0.3)",

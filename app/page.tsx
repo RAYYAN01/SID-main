@@ -213,7 +213,7 @@ export default function HomePage() {
             className="font-playfair text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] text-silk-50"
           >
             Crafting Extraordinary Celebrations <br />
-            <span className="gold-text-foil font-serif italic font-normal">Creating Timeless Memories</span>
+            <span className="gold-text-foil font-script text-4xl sm:text-6xl lg:text-7xl font-normal block mt-2">Creating Timeless Memories</span>
           </motion.h1>
 
           {/* Subtitle Paragraph */}
@@ -273,11 +273,11 @@ export default function HomePage() {
       {/* 3. THE 4 SACRED PILLARS OF SOUTH INDIAN WEDDINGS */}
       <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 space-y-16">
         <div className="text-center space-y-4 max-w-3xl mx-auto">
-          <span className="text-[10px] font-bold text-maroon-800 uppercase tracking-widest bg-gold-100 px-4 py-1 rounded-full border border-gold-400/40">
-            HERITAGE CRAFTSMANSHIP
+          <span className="font-script text-2xl text-gold-600 block mb-1">
+            Heritage Craftsmanship
           </span>
           <h2 className="font-playfair text-3xl sm:text-5xl font-bold text-maroon-950">
-            The Four Things Every <span className="maroon-text-gradient font-serif">Muhurtham Needs</span>
+            The Four Things Every <span className="font-script text-gold-500 font-normal text-4xl sm:text-6xl ml-1">Muhurtham Needs</span>
           </h2>
           <p className="text-sm text-maroon-800/80 leading-relaxed font-sans">
             Decor, the feast, the rituals and the coverage &mdash; these are the four categories most families start with, and where our custom builder begins too.
@@ -314,9 +314,9 @@ export default function HomePage() {
       <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-20 space-y-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gold-400/30 pb-6">
           <div>
-            <span className="text-[10px] font-bold text-maroon-800 uppercase tracking-widest">VISUAL HERITAGE</span>
+            <span className="font-script text-2xl text-gold-600 block mb-1">Visual Heritage</span>
             <h2 className="font-playfair text-3xl sm:text-4xl font-bold text-maroon-950">
-              South Indian Wedding Showcase
+              South Indian <span className="font-script text-gold-500 font-normal text-4xl sm:text-5xl ml-1">Wedding Showcase</span>
             </h2>
           </div>
 
@@ -371,18 +371,18 @@ export default function HomePage() {
       {/* 5B. WHY CHOOSE US */}
       <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-20 space-y-12">
         <div className="text-center space-y-4 max-w-2xl mx-auto">
-          <span className="text-[10px] font-bold text-maroon-800 uppercase tracking-widest bg-gold-100 px-4 py-1 rounded-full border border-gold-400/40">
-            WHY CHOOSE US
+          <span className="font-script text-2xl text-gold-600 block mb-1">
+            The SID Distinction
           </span>
           <h2 className="font-playfair text-3xl sm:text-5xl font-bold text-maroon-950">
-            What Makes Us <span className="maroon-text-gradient font-serif">Different</span>
+            What Makes Us <span className="font-script text-gold-500 font-normal text-4xl sm:text-6xl ml-1">Different</span>
           </h2>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6 gap-6">
           {whyChooseUs.map((item, idx) => (
             <div key={idx} className="p-6 bg-white rounded-2xl shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border border-gold-200/40 space-y-2">
-              <div className="w-8 h-8 rounded-lg bg-maroon-900 text-gold-300 flex items-center justify-center text-xs font-bold font-outfit">
+              <div className="w-8 h-8 rounded-lg bg-maroon-900 text-gold-300 flex items-center justify-center text-xs font-bold font-heading">
                 {idx + 1}
               </div>
               <h3 className="font-playfair text-base font-bold text-maroon-900">{item.title}</h3>
@@ -396,11 +396,11 @@ export default function HomePage() {
       <section className="bg-silk-50 text-maroon-950 py-20 border-t-2 border-gold-400/30">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center space-y-4 max-w-2xl mx-auto">
-            <span className="text-[10px] font-bold text-maroon-800 uppercase tracking-widest bg-gold-100 px-4 py-1 rounded-full border border-gold-400/40">
-              CLIENT GRATITUDE
+            <span className="font-script text-2xl text-gold-600 block mb-1">
+              Client Gratitude
             </span>
             <h2 className="font-playfair text-3xl sm:text-5xl font-bold maroon-text-gradient">
-              Words From Happy Families
+              Words From <span className="font-script text-gold-500 font-normal text-4xl sm:text-6xl ml-1">Happy Families</span>
             </h2>
             <TraditionalBorder />
           </div>

@@ -5,8 +5,8 @@
 @layer base {
   :root {
     --font-playfair: 'Playfair Display', Georgia, serif;
-    --font-outfit: 'Outfit', sans-serif;
-    --font-inter: 'Inter', system-ui, sans-serif;
+    --font-great-vibes: 'Great Vibes', cursive;
+    --font-jakarta: 'Plus Jakarta Sans', system-ui, sans-serif;
   }
 
   html {
@@ -16,14 +16,23 @@
   }
 
   body {
+    font-family: var(--font-jakarta), system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-playfair), Georgia, serif;
   }
 
   img {
     filter: brightness(1.12) contrast(1.05) saturate(1.08);
     transition: filter 0.3s ease;
   }
+}
+
+.font-script {
+  font-family: var(--font-great-vibes), cursive;
 }
 
 /* Custom Scrollbar */

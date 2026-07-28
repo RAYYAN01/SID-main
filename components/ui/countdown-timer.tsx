@@ -54,7 +54,7 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
           { label: 'Seconds', value: isMounted ? timeLeft.seconds : 0 },
         ].map((unit, index) => (
           <div key={index} className="bg-white border-2 border-gold-300/70 rounded-2xl p-4 md:p-5 shadow-md">
-            <div className="text-2xl md:text-4xl font-bold font-outfit text-gold-600">
+            <div className="text-2xl md:text-4xl font-bold font-heading text-gold-600">
               {String(unit.value).padStart(2, '0')}
             </div>
             <div className="text-xs md:text-sm font-bold text-maroon-900 uppercase tracking-widest mt-1">

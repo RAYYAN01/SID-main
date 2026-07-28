@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Playfair_Display, Outfit, Inter } from 'next/font/google';
+import { Playfair_Display, Great_Vibes, Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import { Navbar } from '@/components/navigation/navbar';
 import { Footer } from '@/components/navigation/footer';
@@ -10,19 +10,22 @@ import { SITE } from '@/lib/site-config';
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
+  weight: ['400', '600', '700'],
   variable: '--font-playfair',
   display: 'swap',
 });
 
-const outfit = Outfit({
+const greatVibes = Great_Vibes({
   subsets: ['latin'],
-  variable: '--font-outfit',
+  weight: ['400'],
+  variable: '--font-great-vibes',
   display: 'swap',
 });
 
-const inter = Inter({
+const jakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
-  variable: '--font-inter',
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-jakarta',
   display: 'swap',
 });
 
@@ -89,7 +92,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${playfair.variable} ${outfit.variable} ${inter.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${playfair.variable} ${greatVibes.variable} ${jakarta.variable}`}>
       <body suppressHydrationWarning className="font-sans antialiased bg-silk-100 text-maroon-950 min-h-screen flex flex-col selection:bg-gold-400 selection:text-maroon-950">
         <script
           type="application/ld+json"

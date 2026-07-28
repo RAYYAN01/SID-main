@@ -109,7 +109,7 @@ export default function PackagesPage() {
 
               <div className="bg-maroon-900 text-ivory p-4 rounded-xl mb-6 border border-gold-400/40">
                 <span className="text-[11px] text-gold-300 uppercase block font-semibold">Capacity</span>
-                <span className="text-2xl font-bold font-outfit text-gold-400">{pkg.guestCapacity} Guests</span>
+                <span className="text-2xl font-bold font-heading text-gold-400">{pkg.guestCapacity} Guests</span>
                 <span className="text-[11px] text-gold-200/70 block mt-0.5">Contact us for a custom quote</span>
               </div>
 

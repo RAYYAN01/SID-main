@@ -42,11 +42,11 @@ export default function GalleryPage() {
       
       {/* Header */}
       <div className="text-center space-y-4 max-w-3xl mx-auto">
-        <span className="text-gold-600 font-semibold text-xs uppercase tracking-widest bg-gold-100 px-3 py-1 rounded-full border border-gold-300">
+        <span className="font-script text-2xl text-gold-600 block mb-1">
           Visual Heritage
         </span>
         <h1 className="font-playfair text-3xl sm:text-5xl lg:text-6xl font-bold text-maroon-900">
-          Wedding Gallery
+          Wedding <span className="font-script text-gold-500 font-normal text-4xl sm:text-6xl ml-1">Gallery</span>
         </h1>
         <p className="text-maroon-700/80 text-sm sm:text-base">
           Photos and clips from weddings we&apos;ve set up and shot over the last few seasons.
