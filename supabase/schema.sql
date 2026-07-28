@@ -86,9 +86,18 @@ ALTER TABLE services ENABLE ROW LEVEL SECURITY;
 ALTER TABLE wedding_packages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE quotations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE bookings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE gallery_items ENABLE ROW LEVEL SECURITY;
+ALTER TABLE testimonials ENABLE ROW LEVEL SECURITY;
 
 -- Allow public read access to catalog data
 CREATE POLICY "Public read services" ON services FOR SELECT USING (true);
 CREATE POLICY "Public read packages" ON wedding_packages FOR SELECT USING (true);
 CREATE POLICY "Public read gallery" ON gallery_items FOR SELECT USING (true);
 CREATE POLICY "Public read testimonials" ON testimonials FOR SELECT USING (true);
+
+-- Allow public insert and read access to quotations and bookings
+CREATE POLICY "Public insert quotations" ON quotations FOR INSERT WITH CHECK (true);
+CREATE POLICY "Public read quotations" ON quotations FOR SELECT USING (true);
+CREATE POLICY "Public insert bookings" ON bookings FOR INSERT WITH CHECK (true);
+CREATE POLICY "Public read bookings" ON bookings FOR SELECT USING (true);
+

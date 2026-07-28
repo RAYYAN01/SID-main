@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Phone, Mail, MapPin, Instagram, Facebook, Youtube } from 'lucide-react';
+import { Phone, Mail, MapPin, Instagram, Facebook } from 'lucide-react';
 import { TraditionalBorder } from '../ui/traditional-border';
 import { BrandMark } from '../ui/brand-mark';
 import { SITE } from '@/lib/site-config';
@@ -25,9 +25,8 @@ export const Footer: React.FC = () => {
               Davanagere&apos;s premier event management company. Crafting extraordinary celebrations and creating timeless memories since {SITE.foundedYear}.
             </p>
             <div className="flex items-center gap-4 text-gold-400">
-              <a href="#" className="hover:text-gold-200 transition-colors"><Instagram className="w-5 h-5" /></a>
-              <a href="#" className="hover:text-gold-200 transition-colors"><Facebook className="w-5 h-5" /></a>
-              <a href="#" className="hover:text-gold-200 transition-colors"><Youtube className="w-5 h-5" /></a>
+              <a href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="hover:text-gold-200 transition-colors"><Instagram className="w-5 h-5" /></a>
+              <a href={SITE.facebookUrl} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="hover:text-gold-200 transition-colors"><Facebook className="w-5 h-5" /></a>
             </div>
           </div>
 
@@ -63,15 +62,22 @@ export const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Contact Details */}
-          <div>
-            <h4 className="font-playfair text-sm font-bold text-gold-300 mb-4 border-b border-gold-400/20 pb-2 uppercase tracking-wider">
-              Get in Touch
+          {/* Contact Details & Location Map */}
+          <div className="space-y-4">
+            <h4 className="font-playfair text-sm font-bold text-gold-300 border-b border-gold-400/20 pb-2 uppercase tracking-wider">
+              Get in Touch & Location
             </h4>
             <ul className="space-y-3 text-xs text-silk-200/80 font-sans">
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-gold-400 shrink-0 mt-0.5" />
-                <span>{SITE.address}</span>
+                <a
+                  href={`https://maps.google.com/?q=${encodeURIComponent(SITE.address)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-gold-300 transition-colors leading-relaxed"
+                >
+                  {SITE.address}
+                </a>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-gold-400 shrink-0" />
@@ -82,13 +88,38 @@ export const Footer: React.FC = () => {
                 <a href={`mailto:${SITE.email}`} className="hover:text-gold-300 transition-colors">{SITE.email}</a>
               </li>
             </ul>
+
+            {/* Embedded Interactive Google Map */}
+            <div className="w-full h-36 rounded-xl overflow-hidden border border-gold-400/40 shadow-md relative">
+              <iframe
+                title="SID Events Google Map Location"
+                src={`https://maps.google.com/maps?q=${encodeURIComponent('S I D Events, 3434/1B1, 1st main, 6th Cross Road, MCC B Block, Davangere, Karnataka 577004')}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
           </div>
         </div>
 
         <TraditionalBorder className="my-8 opacity-40" />
 
-        <div className="flex flex-col md:flex-row items-center justify-between text-[11px] text-silk-200/60 gap-4 font-sans">
+        <div className="flex flex-col md:flex-row items-center justify-between text-[11px] text-silk-200/70 gap-4 font-sans">
           <p>© {new Date().getFullYear()} {SITE.legalName}, Davanagere. All Rights Reserved.</p>
+          <div className="flex items-center gap-1.5 text-gold-300/90">
+            <span>Designed &amp; Developed by</span>
+            <a
+              href="https://naazailabs.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gold-300 font-bold hover:text-white underline underline-offset-4 transition-colors"
+            >
+              naazailabs.com
+            </a>
+          </div>
           <div className="flex items-center gap-6">
             <Link href="#" className="hover:underline">Privacy Policy</Link>
             <Link href="#" className="hover:underline">Terms of Service</Link>

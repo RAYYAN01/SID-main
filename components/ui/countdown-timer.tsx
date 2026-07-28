@@ -11,6 +11,7 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
   targetDate = '2026-11-25T10:00:00',
   title = 'Upcoming Royal Wedding Countdown',
 }) => {
+  const [isMounted, setIsMounted] = useState(false);
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -19,6 +20,7 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
   });
 
   useEffect(() => {
+    setIsMounted(true);
     const calculateTime = () => {
       const difference = +new Date(targetDate) - +new Date();
       if (difference > 0) {
@@ -46,10 +48,10 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
       </h3>
       <div className="grid grid-cols-4 gap-3 md:gap-6">
         {[
-          { label: 'Days', value: timeLeft.days },
-          { label: 'Hours', value: timeLeft.hours },
-          { label: 'Minutes', value: timeLeft.minutes },
-          { label: 'Seconds', value: timeLeft.seconds },
+          { label: 'Days', value: isMounted ? timeLeft.days : 0 },
+          { label: 'Hours', value: isMounted ? timeLeft.hours : 0 },
+          { label: 'Minutes', value: isMounted ? timeLeft.minutes : 0 },
+          { label: 'Seconds', value: isMounted ? timeLeft.seconds : 0 },
         ].map((unit, index) => (
           <div key={index} className="bg-maroon-950/80 border border-gold-400/30 rounded-2xl p-4 md:p-5 shadow-inner">
             <div className="text-2xl md:text-4xl font-bold font-outfit text-gold-400">

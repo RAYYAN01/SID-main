@@ -25,7 +25,10 @@ export const IntroSplash: React.FC = () => {
       sessionStorage.setItem(SESSION_KEY, '1');
     }, 2800);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      document.body.style.overflow = '';
+    };
   }, []);
 
   if (!mounted) return null;

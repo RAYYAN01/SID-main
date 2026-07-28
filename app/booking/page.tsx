@@ -15,9 +15,9 @@ export default function BookingPage() {
     fullName: '',
     email: '',
     phone: '',
-    weddingDate: '2026-11-25',
+    weddingDate: '',
     venueCity: 'Davanagere',
-    venueAddress: 'Kamana Bhavana, PJ Extension',
+    venueAddress: '',
     notes: '',
   });
 

@@ -34,6 +34,7 @@ import { GoldButton } from '@/components/ui/gold-button';
 import { GlassCard } from '@/components/ui/glass-card';
 import { TraditionalBorder } from '@/components/ui/traditional-border';
 import { CountdownTimer } from '@/components/ui/countdown-timer';
+import { AnimatedCounter } from '@/components/ui/animated-counter';
 import { MOCK_STANDARD_PACKAGES, MOCK_TESTIMONIALS, BUSINESS_OFFERINGS, BusinessOffering } from '@/lib/mock-data';
 import { SITE, SITE_STATS, getWhatsAppUrl } from '@/lib/site-config';
 
@@ -99,14 +100,14 @@ export default function HomePage() {
       title: 'Banana Leaf Royal Sadhya',
       subtitle: '28-Item Traditional Feast & Live Dosa Counters',
       desc: 'Authentic South Indian feast served on fresh banana leaves including Payasam, Bisi Bele Bath, Vadai, Mysuru Pak & live mocktails.',
-      img: 'https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?auto=format&fit=crop&w=1200&q=80',
+      img: '/onam-sadhya-lunch-menu-1.webp',
       badge: 'CATERING & FEAST',
     },
     {
       title: 'Vedic Rituals & Live Nadaswaram',
       subtitle: 'Senior Vedic Scholars & Auspicious Thavil Ensemble',
       desc: 'Experienced Vedic pundits conducting complete Muhurtham, Ganapathi Homa, Saptapadi rites alongside live Nadaswaram ragas.',
-      img: '/sid-party18.jpeg',
+      img: '/ChatGPT Image Jul 28, 2026, 11_34_17 AM.png',
       badge: 'VEDIC RITES',
     },
     {
@@ -156,21 +157,29 @@ export default function HomePage() {
     : galleryShowcase.filter((g) => g.category === galleryCategory);
 
   return (
-    <div className="bg-silk-100 text-maroon-900 min-h-screen relative pb-28 font-sans">
+    <div className="bg-silk-100 text-maroon-900 min-h-screen relative pb-12 font-sans">
       
       {/* 1. CINEMATIC HERO SECTION ("Royal South Indian Sanctum") */}
-      <section className="relative min-h-[95vh] flex items-center justify-center bg-maroon-950 text-silk-50 px-4 overflow-hidden pt-10">
+      <section className="relative min-h-screen sm:min-h-[110vh] flex items-center justify-center bg-maroon-950 text-silk-50 px-4 overflow-hidden pt-20 pb-16">
         
-        {/* Background Image with Warm Ambient Lighting Glow */}
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/sid-party42.webp"
-            alt="Lotus floral wedding stage backdrop by SID Events"
-            fill
-            className="object-cover opacity-80 scale-105"
-            priority
+        {/* Background Video rotated 90 degrees to the left with Warm Ambient Overlay */}
+        <div className="absolute inset-0 z-0 overflow-hidden flex items-center justify-center bg-maroon-950">
+          <video
+            src="/sid-video1.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute top-1/2 left-1/2 object-cover opacity-85 pointer-events-none"
+            style={{
+              width: 'max(160vh, 160vw)',
+              height: 'max(160vw, 160vh)',
+              minWidth: '110vh',
+              minHeight: '110vw',
+              transform: 'translate(-50%, -50%) rotate(-90deg)',
+            }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-maroon-950 via-maroon-950/40 to-maroon-950/60" />
+          <div className="absolute inset-0 bg-gradient-to-t from-maroon-950 via-maroon-950/20 to-maroon-950/30" />
         </div>
 
         <div className="relative z-10 max-w-5xl mx-auto text-center space-y-8 py-10">
@@ -203,7 +212,7 @@ export default function HomePage() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-base sm:text-lg text-gold-100/90 max-w-3xl mx-auto font-sans leading-relaxed font-light"
           >
-            From dream weddings to grand corporate experiences, SID Events transforms every occasion in {SITE.city}, {SITE.state} into an unforgettable celebration &mdash; with a live custom wedding package builder to plan every detail.
+            From dream weddings to grand corporate experiences, SID Events transforms every occasion in {SITE.city}, {SITE.state}{' '}into an unforgettable celebration &mdash; with a live custom wedding package builder to plan every detail.
           </motion.p>
 
           {/* Action Buttons */}
@@ -239,7 +248,9 @@ export default function HomePage() {
           {stats.map((stat, idx) => (
             <div key={idx} className="text-center space-y-2 border-r last:border-0 border-gold-400/20 px-2">
               <div className="flex justify-center">{stat.icon}</div>
-              <div className="text-3xl sm:text-4xl font-bold font-outfit maroon-text-gradient">{stat.value}</div>
+              <div className="text-3xl sm:text-4xl font-bold font-outfit maroon-text-gradient">
+                <AnimatedCounter value={stat.value} />
+              </div>
               <div className="text-[10px] uppercase font-bold text-maroon-700 tracking-widest">{stat.label}</div>
             </div>
           ))}
@@ -347,7 +358,7 @@ export default function HomePage() {
                 key={pkg.id}
                 variant="dark"
                 className={`flex flex-col justify-between space-y-6 relative border ${
-                  pkg.isPopular ? 'border-2 border-gold-400 shadow-2xl scale-105 bg-maroon-900' : 'border-gold-400/20'
+                  pkg.isPopular ? 'border-2 border-gold-400 shadow-2xl scale-100 md:scale-105 bg-maroon-900' : 'border-gold-400/20'
                 }`}
               >
                 {pkg.isPopular && (
@@ -510,7 +521,7 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {MOCK_TESTIMONIALS.map((t) => (
+            {MOCK_TESTIMONIALS.slice(0, 6).map((t) => (
               <GlassCard key={t.id} variant="dark" className="flex flex-col justify-between space-y-6 p-8 border border-gold-400/30">
                 <div className="space-y-4">
                   <div className="flex gap-1 text-gold-400">
@@ -523,13 +534,13 @@ export default function HomePage() {
                   </p>
                 </div>
 
-                <div className="flex items-center gap-4 pt-4 border-t border-gold-400/20">
-                  <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-gold-400">
-                    <Image src={t.imageUrl} alt={t.coupleNames} fill className="object-cover" />
+                <div className="flex items-center gap-3.5 pt-4 border-t border-gold-400/20">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gold-500 to-gold-700 text-maroon-950 font-bold font-playfair flex items-center justify-center border border-gold-300 shadow-md text-xs shrink-0 uppercase">
+                    {t.coupleNames.split(/\s+/).map(n => n[0]).join('').substring(0, 2)}
                   </div>
                   <div>
                     <h4 className="font-playfair text-sm font-bold text-gold-300">{t.coupleNames}</h4>
-                    <p className="text-[11px] text-gold-200/70">{t.location} • {t.weddingDate}</p>
+                    <p className="text-[11px] text-gold-200/70">{t.location}</p>
                   </div>
                 </div>
               </GlassCard>
@@ -597,24 +608,6 @@ export default function HomePage() {
           </div>
         </div>
       )}
-
-      {/* FLOATING ACTION BUTTONS */}
-      <div className="fixed bottom-6 left-6 z-50">
-        <Link href="/contact">
-          <button className="bg-gradient-to-r from-gold-300 to-gold-500 text-maroon-950 font-bold text-xs uppercase tracking-widest px-5 py-3 rounded-full shadow-2xl flex items-center gap-2 border-2 border-white transition-all hover:scale-105">
-            <Calendar className="w-4 h-4" /> BOOK CONSULTATION
-          </button>
-        </Link>
-      </div>
-
-      <div className="fixed bottom-6 right-24 z-40 hidden sm:block">
-        <Link href="/custom-builder">
-          <button className="bg-maroon-900 hover:bg-black text-gold-300 font-bold text-xs uppercase tracking-widest px-5 py-3 rounded-full shadow-2xl border border-gold-400/40 transition-all hover:scale-105">
-            BUILD CUSTOM PACKAGE
-          </button>
-        </Link>
-      </div>
-
     </div>
   );
 }

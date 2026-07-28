@@ -7,15 +7,16 @@ interface BrandMarkProps {
 
 export const BrandMark: React.FC<BrandMarkProps> = ({ className = 'w-10 h-10' }) => {
   return (
-    <span className={`relative inline-block ${className}`}>
+    <span className={`relative inline-block rounded-full overflow-hidden border-2 border-gold-400/80 shadow-md ${className}`}>
       <Image
         src="/logo-circle.png"
         alt="SID Events logo"
         fill
         sizes="120px"
-        className="object-contain"
+        className="object-cover"
         priority
       />
     </span>
   );
 };
+

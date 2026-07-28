@@ -72,7 +72,7 @@ export default function ServicesPage() {
           Planning a wedding specifically? Try our live package builder.
         </h2>
         <p className="text-sm text-gold-100/80 max-w-xl mx-auto">
-          Build a custom South Indian wedding package step by step and see the estimated cost update in real time.
+          Build a custom South Indian wedding package step by step and request a detailed quote from our team.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
           <Link href="/custom-builder">

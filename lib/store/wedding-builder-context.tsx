@@ -27,20 +27,37 @@ const WeddingBuilderContext = createContext<WeddingBuilderContextType | undefine
 
 const LOCAL_STORAGE_KEY = 'sid_events_builder_draft_v1';
 
+const mergeWithDefaultState = (parsed: any): CustomBuilderState => {
+  if (!parsed || typeof parsed !== 'object') return DEFAULT_BUILDER_STATE;
+  return {
+    ...DEFAULT_BUILDER_STATE,
+    ...parsed,
+    selectedServices: parsed.selectedServices || DEFAULT_BUILDER_STATE.selectedServices,
+    catering: { ...DEFAULT_BUILDER_STATE.catering, ...(parsed.catering || {}) },
+    photography: { ...DEFAULT_BUILDER_STATE.photography, ...(parsed.photography || {}) },
+    makeup: { ...DEFAULT_BUILDER_STATE.makeup, ...(parsed.makeup || {}) },
+    purohit: { ...DEFAULT_BUILDER_STATE.purohit, ...(parsed.purohit || {}) },
+    security: { ...DEFAULT_BUILDER_STATE.security, ...(parsed.security || {}) },
+    welcomeGirls: { ...DEFAULT_BUILDER_STATE.welcomeGirls, ...(parsed.welcomeGirls || {}) },
+    dancers: { ...DEFAULT_BUILDER_STATE.dancers, ...(parsed.dancers || {}) },
+  };
+};
+
 export const WeddingBuilderProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [state, setState] = useState<CustomBuilderState>(() => {
+  const [state, setState] = useState<CustomBuilderState>(DEFAULT_BUILDER_STATE);
+
+  React.useEffect(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
       if (saved) {
         try {
-          return JSON.parse(saved);
+          setState(mergeWithDefaultState(JSON.parse(saved)));
         } catch (e) {
           console.error('Failed to parse saved draft:', e);
         }
       }
     }
-    return DEFAULT_BUILDER_STATE;
-  });
+  }, []);
 
   const setStep = (step: number) => {
     setState((prev) => ({ ...prev, currentStep: Math.min(Math.max(1, step), 9) }));
@@ -117,7 +134,7 @@ export const WeddingBuilderProvider: React.FC<{ children: React.ReactNode }> = (
       const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
       if (saved) {
         try {
-          setState(JSON.parse(saved));
+          setState(mergeWithDefaultState(JSON.parse(saved)));
         } catch (e) {
           console.error(e);
         }
