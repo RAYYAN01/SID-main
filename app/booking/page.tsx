@@ -7,6 +7,8 @@ import { GlassCard } from '@/components/ui/glass-card';
 import { GoldButton } from '@/components/ui/gold-button';
 import { ShieldCheck } from 'lucide-react';
 
+import { getWhatsAppBookingRequestUrl } from '@/lib/whatsapp';
+
 export default function BookingPage() {
   const router = useRouter();
   const { state } = useWeddingBuilder();
@@ -27,10 +29,14 @@ export default function BookingPage() {
     e.preventDefault();
     setIsSubmitting(true);
 
+    const refCode = `BK-${Math.floor(1000 + Math.random() * 9000)}`;
+    const waUrl = getWhatsAppBookingRequestUrl(formData, state, refCode, '918858362367');
+
     setTimeout(() => {
       setIsSubmitting(false);
-      router.push(`/request-received?ref=BK-${Math.floor(1000 + Math.random() * 9000)}`);
-    }, 1200);
+      window.open(waUrl, '_blank');
+      router.push(`/request-received?ref=${refCode}`);
+    }, 600);
   };
 
   return (

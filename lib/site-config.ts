@@ -8,7 +8,7 @@ export const SITE = {
   address: 'S I D Events, 3434/1B1, 1st main, 6th Cross Road, behind गुंडी विद्यालय, MCC B Block, Davangere, Karnataka 577004',
   phoneDisplay: '+91 80954 08404',
   phoneHref: 'tel:+918095408404',
-  whatsappNumber: '918095408404',
+  whatsappNumber: '918858362367',
   email: 'sideventsdvg@gmail.com',
   instagramUrl: 'https://www.instagram.com/sideventsdvg/',
   facebookUrl: 'https://www.facebook.com/sideventsdvg/',
