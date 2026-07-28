@@ -23,7 +23,7 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const isLanding = pathname === '/';
+  const isLanding = pathname === '/' || pathname === '/services';
 
   // Opacity calculation for navbar on landing page:
   // - scrollY === 0: 0% (fully transparent)

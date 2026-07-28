@@ -1,7 +1,7 @@
 export const SITE = {
   name: 'SID Events',
   legalName: 'SID Events',
-  tagline: "Davanagere's #1 Event Company",
+  tagline: "Davanagere's Top 1 Event Company",
   foundedYear: 2014,
   city: 'Davanagere',
   state: 'Karnataka',

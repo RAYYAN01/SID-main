@@ -200,7 +200,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-maroon-900/90 border border-gold-400/50 backdrop-blur-xl shadow-xl text-gold-300 text-xs font-bold uppercase tracking-widest"
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-transparent border border-gold-400/60 backdrop-blur-sm text-gold-300 text-xs font-bold uppercase tracking-widest shadow-lg"
           >
             {SITE.tagline.toUpperCase()}
           </motion.div>
@@ -389,96 +389,6 @@ export default function HomePage() {
               <p className="text-xs text-maroon-700/80 leading-relaxed">{item.desc}</p>
             </div>
           ))}
-        </div>
-      </section>
-
-      {/* 5C. OUR PROCESS */}
-      <section className="bg-maroon-950 text-silk-50 py-20 border-y-2 border-gold-400/40">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-          <div className="text-center space-y-4 max-w-2xl mx-auto">
-            <span className="text-[10px] font-bold text-gold-300 uppercase tracking-widest bg-maroon-900 px-4 py-1 rounded-full border border-gold-400/30">
-              HOW IT WORKS
-            </span>
-            <h2 className="font-playfair text-3xl sm:text-5xl font-bold text-silk-50">
-              Our <span className="gold-text-foil font-serif">Process</span>
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-            {processSteps.map((step) => (
-              <div key={step.num} className="text-center space-y-3 px-2">
-                <div className="w-14 h-14 mx-auto rounded-full bg-maroon-900 border-2 border-gold-400 text-gold-300 flex items-center justify-center">
-                  {step.icon}
-                </div>
-                <span className="text-[10px] font-bold text-gold-400 tracking-widest block">{step.num}</span>
-                <h3 className="font-playfair text-base font-bold text-silk-50">{step.title}</h3>
-                <p className="text-xs text-gold-100/70 leading-relaxed">{step.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 4. STANDARD WEDDING PACKAGES */}
-      <section className="bg-silk-50 text-maroon-950 py-20 border-y-2 border-gold-400/40">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-          
-          <div className="text-center space-y-4 max-w-3xl mx-auto">
-            <span className="text-[10px] font-bold text-maroon-800 uppercase tracking-widest bg-gold-100 px-4 py-1 rounded-full border border-gold-400/40">
-              CURATED COLLECTIONS
-            </span>
-            <h2 className="font-playfair text-3xl sm:text-5xl font-bold text-maroon-950">
-              Standard South Indian <span className="maroon-text-gradient font-serif">Wedding Tiers</span>
-            </h2>
-            <p className="text-sm text-maroon-800/80 leading-relaxed font-sans">
-              Choose from our all-inclusive standard packages or load any tier directly into our custom builder to tailor every line item.
-            </p>
-            <TraditionalBorder />
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-4 gap-8">
-            {MOCK_STANDARD_PACKAGES.map((pkg) => (
-              <GlassCard
-                key={pkg.id}
-                variant="light"
-                className={`flex flex-col justify-between space-y-6 relative border bg-white ${
-                  pkg.isPopular ? 'border-2 border-gold-500 shadow-2xl scale-100 md:scale-105' : 'border-gold-300/50 shadow-md'
-                }`}
-              >
-                {pkg.isPopular && (
-                  <div className="absolute -top-3.5 right-6 bg-gradient-to-r from-gold-400 to-gold-600 text-maroon-950 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-md">
-                    MOST POPULAR
-                  </div>
-                )}
-
-                <div>
-                  <h3 className="font-playfair text-2xl font-bold text-maroon-950 mb-1">{pkg.name}</h3>
-                  <p className="text-xs text-gold-700 font-bold mb-4">{pkg.tagline}</p>
-
-                  <div className="bg-silk-100/90 p-4 rounded-xl mb-6 border border-gold-300/60">
-                    <span className="text-[10px] text-maroon-700 uppercase block font-bold">Capacity</span>
-                    <span className="text-2xl font-bold font-outfit maroon-text-gradient">{pkg.guestCapacity} Guests</span>
-                    <span className="text-[10px] text-maroon-700/80 block mt-0.5">Contact us for a custom quote</span>
-                  </div>
-
-                  <ul className="space-y-2.5 text-xs text-maroon-900 mb-6">
-                    {pkg.featuredInclusions.map((inc: string, i: number) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-gold-600 shrink-0 mt-0.5" />
-                        <span>{inc}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <Link href="/custom-builder">
-                  <GoldButton fullWidth variant={pkg.isPopular ? 'gold' : 'dark'} size="sm">
-                    Customize Package
-                  </GoldButton>
-                </Link>
-              </GlassCard>
-            ))}
-          </div>
         </div>
       </section>
 

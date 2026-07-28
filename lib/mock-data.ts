@@ -7,6 +7,18 @@ import {
 } from './types/wedding';
 
 export const MOCK_SERVICES: WeddingService[] = [
+  // Step 1 – Decoration (Featured & Entertainment)
+  {
+    id: 'dec-fog-machine',
+    category: 'decoration',
+    subCategory: 'entertainment',
+    name: 'Low Fog Cloud Effect Machine',
+    description: 'Heavy cloud low fog dry ice effect for couple stage entry and first dance.',
+    price: 15000,
+    unit: 'event',
+    imageUrl: '/Gemini_Generated_Image_drzo1ddrzo1ddrzo.png',
+    popular: true,
+  },
   // Step 1 – Decoration (Home Functions)
   {
     id: 'dec-home-decor',
@@ -70,7 +82,7 @@ export const MOCK_SERVICES: WeddingService[] = [
     description: 'Grand welcoming arch filled with fresh orchids, carnations & banana trunk pillars.',
     price: 35000,
     unit: 'entrance',
-    imageUrl: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=800&q=80',
+    imageUrl: '/sid-party24.jpeg',
   },
   {
     id: 'dec-pathway',
@@ -90,7 +102,7 @@ export const MOCK_SERVICES: WeddingService[] = [
     description: 'Grand entrance arch decorated with fresh flowers, traditional brass lamps & flower rangoli.',
     price: 40000,
     unit: 'foyer',
-    imageUrl: '/sid-party24.jpeg',
+    imageUrl: '/Gemini_Generated_Image_p4o0ivp4o0ivp4o0.png',
     popular: true,
   },
   {
@@ -201,16 +213,6 @@ export const MOCK_SERVICES: WeddingService[] = [
     price: 18000,
     unit: 'event',
     imageUrl: '/Gemini_Generated_Image_la9ccmla9ccmla9c.png',
-  },
-  {
-    id: 'dec-fog-machine',
-    category: 'decoration',
-    subCategory: 'entertainment',
-    name: 'Low Fog Cloud Effect Machine',
-    description: 'Heavy cloud low fog dry ice effect for couple stage entry and first dance.',
-    price: 15000,
-    unit: 'event',
-    imageUrl: '/Gemini_Generated_Image_drzo1ddrzo1ddrzo.png',
   },
   {
     id: 'dec-crackers',
