@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Playfair_Display, Great_Vibes, Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import { Navbar } from '@/components/navigation/navbar';
@@ -29,8 +29,15 @@ const jakarta = Plus_Jakarta_Sans({
   display: 'swap',
 });
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  themeColor: '#07090F',
+};
+
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE.siteUrl),
   title: {
     default: 'SID Events | Premium Event Management Company in Davanagere, Karnataka',
     template: '%s | SID Events',

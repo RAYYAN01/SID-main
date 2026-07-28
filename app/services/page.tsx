@@ -25,7 +25,7 @@ export default function ServicesPage() {
   return (
     <div className="space-y-12 sm:space-y-16 pb-16">
       {/* Full-Width Full-Screen Hero Banner Section */}
-      <section className="relative w-full min-h-[85vh] sm:min-h-[90vh] lg:min-h-screen flex items-center justify-center overflow-hidden border-b-2 border-gold-400/40 bg-maroon-950 pt-20 sm:pt-24">
+      <section className="relative w-full min-h-screen-dvh sm:min-h-[100dvh] flex items-center justify-center overflow-hidden border-b-2 border-gold-400/40 bg-maroon-950 pt-20 sm:pt-24">
         <Image
           src="/Sid1.png"
           alt="Dream. Plan. Create. Celebrate. - SID Events"

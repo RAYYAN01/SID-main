@@ -171,7 +171,7 @@ export default function HomePage() {
     <div className="bg-silk-100 text-maroon-900 min-h-screen relative pb-12 font-sans">
       
       {/* 1. CINEMATIC HERO SECTION ("Royal South Indian Sanctum") */}
-      <section className="relative min-h-screen sm:min-h-[110vh] flex items-center justify-center bg-maroon-950 text-silk-50 px-4 overflow-hidden pt-20 pb-16">
+      <section className="relative min-h-screen-dvh flex items-center justify-center bg-maroon-950 text-silk-50 px-5 sm:px-8 overflow-hidden pt-16 pb-12 sm:pt-20 sm:pb-16">
         
         {/* Background Video rotated 90 degrees to the left with Warm Ambient Overlay */}
         <div className="absolute inset-0 z-0 overflow-hidden flex items-center justify-center bg-maroon-950">
@@ -183,24 +183,24 @@ export default function HomePage() {
             playsInline
             className="absolute top-1/2 left-1/2 object-cover opacity-85 pointer-events-none"
             style={{
-              width: 'max(160vh, 160vw)',
-              height: 'max(160vw, 160vh)',
-              minWidth: '110vh',
+              width: 'max(160dvh, 160vw)',
+              height: 'max(160vw, 160dvh)',
+              minWidth: '110dvh',
               minHeight: '110vw',
               transform: 'translate(-50%, -50%) rotate(-90deg)',
             }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-maroon-950 via-maroon-950/20 to-maroon-950/30" />
+          <div className="absolute inset-0 bg-gradient-to-t from-maroon-950 via-maroon-950/30 to-maroon-950/40" />
         </div>
 
-        <div className="relative z-10 max-w-5xl mx-auto text-center space-y-8 py-10">
+        <div className="relative z-10 w-full max-w-5xl mx-auto text-center space-y-5 sm:space-y-8 py-6 sm:py-10">
           
           {/* Top Badge */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-transparent border border-gold-400/60 backdrop-blur-sm text-gold-300 text-xs font-bold uppercase tracking-widest shadow-lg"
+            className="inline-flex items-center gap-2 px-4 py-1.5 sm:px-5 sm:py-2 rounded-full bg-transparent border border-gold-400/60 backdrop-blur-sm text-gold-300 text-[10px] sm:text-xs font-bold uppercase tracking-widest shadow-lg"
           >
             {SITE.tagline.toUpperCase()}
           </motion.div>
@@ -210,10 +210,10 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="font-playfair text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] text-silk-50"
+            className="font-playfair font-bold tracking-tight leading-[1.15] text-silk-50 px-2"
           >
             Crafting Extraordinary Celebrations <br />
-            <span className="gold-text-foil font-script text-4xl sm:text-6xl lg:text-7xl font-normal block mt-2">Creating Timeless Memories</span>
+            <span className="gold-text-foil font-script block mt-1 sm:mt-2">Creating Timeless Memories</span>
           </motion.h1>
 
           {/* Subtitle Paragraph */}
@@ -221,7 +221,7 @@ export default function HomePage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-base sm:text-lg text-gold-100/90 max-w-3xl mx-auto font-sans leading-relaxed font-light"
+            className="text-gold-100/90 max-w-2xl mx-auto font-sans leading-relaxed font-light px-2"
           >
             From dream weddings to grand corporate experiences, SID Events transforms every occasion in {SITE.city}, {SITE.state}{' '}into an unforgettable celebration &mdash; with a live custom wedding package builder to plan every detail.
           </motion.p>
@@ -231,7 +231,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2"
+            className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-1 sm:pt-2"
           >
             <Link href="/custom-builder">
               <GoldButton size="lg" variant="gold">
@@ -254,15 +254,15 @@ export default function HomePage() {
       </section>
 
       {/* 2. STATS BAR */}
-      <section className="max-w-[1600px] mx-auto px-4 -mt-10 relative z-20">
-        <div className="bg-silk-50 border-2 border-gold-400/40 rounded-3xl p-6 sm:p-8 shadow-xl grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-maroon-900">
+      <section className="max-w-[1600px] mx-auto px-4 -mt-8 sm:-mt-10 relative z-20">
+        <div className="bg-silk-50 border-2 border-gold-400/40 rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-xl grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 text-maroon-900">
           {stats.map((stat, idx) => (
-            <div key={idx} className="text-center space-y-2 border-r last:border-0 border-gold-400/20 px-2">
+            <div key={idx} className="text-center space-y-1 sm:space-y-2 border-r last:border-0 border-gold-400/20 px-1 sm:px-2">
               <div className="flex justify-center">{stat.icon}</div>
-              <div className="text-2xl sm:text-4xl font-bold font-outfit maroon-text-gradient">
+              <div className="text-xl sm:text-4xl font-bold font-heading maroon-text-gradient">
                 <AnimatedCounter value={stat.value} />
               </div>
-              <div className="text-[9px] sm:text-[10px] uppercase font-bold text-maroon-700 tracking-widest">{stat.label}</div>
+              <div className="text-[8px] sm:text-[10px] uppercase font-bold text-maroon-700 tracking-widest">{stat.label}</div>
             </div>
           ))}
         </div>
@@ -273,11 +273,11 @@ export default function HomePage() {
       {/* 3. THE 4 SACRED PILLARS OF SOUTH INDIAN WEDDINGS */}
       <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 space-y-16">
         <div className="text-center space-y-4 max-w-3xl mx-auto">
-          <span className="font-script text-2xl text-gold-600 block mb-1">
+          <span className="font-script-sm text-gold-600 block">
             Heritage Craftsmanship
           </span>
           <h2 className="font-playfair text-3xl sm:text-5xl font-bold text-maroon-950">
-            The Four Things Every <span className="font-script text-gold-500 font-normal text-4xl sm:text-6xl ml-1">Muhurtham Needs</span>
+            The Four Things Every <span className="font-script text-gold-500 font-normal">Muhurtham Needs</span>
           </h2>
           <p className="text-sm text-maroon-800/80 leading-relaxed font-sans">
             Decor, the feast, the rituals and the coverage &mdash; these are the four categories most families start with, and where our custom builder begins too.
@@ -314,9 +314,9 @@ export default function HomePage() {
       <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-20 space-y-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gold-400/30 pb-6">
           <div>
-            <span className="font-script text-2xl text-gold-600 block mb-1">Visual Heritage</span>
+            <span className="font-script-sm text-gold-600 block">Visual Heritage</span>
             <h2 className="font-playfair text-3xl sm:text-4xl font-bold text-maroon-950">
-              South Indian <span className="font-script text-gold-500 font-normal text-4xl sm:text-5xl ml-1">Wedding Showcase</span>
+              South Indian <span className="font-script text-gold-500 font-normal">Wedding Showcase</span>
             </h2>
           </div>
 
@@ -371,11 +371,11 @@ export default function HomePage() {
       {/* 5B. WHY CHOOSE US */}
       <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-20 space-y-12">
         <div className="text-center space-y-4 max-w-2xl mx-auto">
-          <span className="font-script text-2xl text-gold-600 block mb-1">
+          <span className="font-script-sm text-gold-600 block">
             The SID Distinction
           </span>
           <h2 className="font-playfair text-3xl sm:text-5xl font-bold text-maroon-950">
-            What Makes Us <span className="font-script text-gold-500 font-normal text-4xl sm:text-6xl ml-1">Different</span>
+            What Makes Us <span className="font-script text-gold-500 font-normal">Different</span>
           </h2>
         </div>
 
@@ -396,11 +396,11 @@ export default function HomePage() {
       <section className="bg-silk-50 text-maroon-950 py-20 border-t-2 border-gold-400/30">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center space-y-4 max-w-2xl mx-auto">
-            <span className="font-script text-2xl text-gold-600 block mb-1">
+            <span className="font-script-sm text-gold-600 block">
               Client Gratitude
             </span>
             <h2 className="font-playfair text-3xl sm:text-5xl font-bold maroon-text-gradient">
-              Words From <span className="font-script text-gold-500 font-normal text-4xl sm:text-6xl ml-1">Happy Families</span>
+              Words From <span className="font-script text-gold-500 font-normal">Happy Families</span>
             </h2>
             <TraditionalBorder />
           </div>
@@ -487,16 +487,24 @@ export default function HomePage() {
           </div>
 
           {/* Mobile Controls & Dots Indicator */}
-          <div className="flex items-center justify-between sm:justify-center gap-4 pt-2">
+          <div className="flex items-center justify-between sm:justify-center gap-2 sm:gap-4 pt-2 overflow-hidden max-w-full">
             <button
               onClick={handlePrevTestimonial}
-              className="p-2.5 rounded-full bg-white text-maroon-900 hover:bg-gold-400 border-2 border-gold-400/60 shadow-md transition-all sm:hidden cursor-pointer"
+              className="p-2 sm:p-2.5 rounded-full bg-white text-maroon-900 hover:bg-gold-400 border-2 border-gold-400/60 shadow-md transition-all sm:hidden cursor-pointer shrink-0"
               aria-label="Previous Review"
             >
-              <ChevronLeft className="w-5 h-5" />
+              <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
 
-            <div className="flex justify-center items-center gap-1.5 sm:gap-2">
+            {/* Mobile: show text counter instead of dots */}
+            <div className="sm:hidden text-center">
+              <span className="text-xs font-bold text-maroon-900">
+                {testimonialIndex + 1} / {MOCK_TESTIMONIALS.length}
+              </span>
+            </div>
+
+            {/* Desktop: show dots */}
+            <div className="hidden sm:flex justify-center items-center gap-1.5 sm:gap-2 flex-wrap max-w-full">
               {MOCK_TESTIMONIALS.map((_, idx) => (
                 <button
                   key={idx}
@@ -513,10 +521,10 @@ export default function HomePage() {
 
             <button
               onClick={handleNextTestimonial}
-              className="p-2.5 rounded-full bg-white text-maroon-900 hover:bg-gold-400 border-2 border-gold-400/60 shadow-md transition-all sm:hidden cursor-pointer"
+              className="p-2 sm:p-2.5 rounded-full bg-white text-maroon-900 hover:bg-gold-400 border-2 border-gold-400/60 shadow-md transition-all sm:hidden cursor-pointer shrink-0"
               aria-label="Next Review"
             >
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
           </div>
         </div>
@@ -529,15 +537,15 @@ export default function HomePage() {
 
       {/* 8. FINAL CTA */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-4">
-        <div className="bg-maroon-950 rounded-3xl p-10 sm:p-16 text-center space-y-6 border border-gold-400/30 relative overflow-hidden">
-          <div className="relative z-10 space-y-6">
-            <h2 className="font-playfair text-3xl sm:text-5xl font-bold text-silk-50">
-              Let&apos;s Create Something <span className="gold-text-foil font-serif">Extraordinary Together</span>
+        <div className="bg-maroon-950 rounded-2xl sm:rounded-3xl p-6 sm:p-16 text-center space-y-5 sm:space-y-6 border border-gold-400/30 relative overflow-hidden">
+          <div className="relative z-10 space-y-5 sm:space-y-6">
+            <h2 className="font-playfair font-bold text-silk-50">
+              Let&apos;s Create Something <span className="gold-text-foil font-script block sm:inline mt-1 sm:mt-0">Extraordinary Together</span>
             </h2>
-            <p className="text-sm sm:text-base text-gold-100/80 max-w-xl mx-auto">
+            <p className="text-gold-100/80 max-w-xl mx-auto">
               Your event deserves careful planning and flawless execution. Tell us what you have in mind.
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-1 sm:pt-2">
               <Link href="/contact">
                 <GoldButton variant="gold" size="lg" icon={<Phone className="w-5 h-5" />}>
                   Get Free Consultation
