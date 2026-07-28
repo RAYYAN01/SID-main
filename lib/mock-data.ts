@@ -16,7 +16,7 @@ export const MOCK_SERVICES: WeddingService[] = [
     description: 'Fresh mango leaf toran, lotus urli welcome setup, flower rangoli & living room silk drapes.',
     price: 25000,
     unit: 'setup',
-    imageUrl: 'https://images.unsplash.com/photo-1544078751-58fee2d8a03b?auto=format&fit=crop&w=800&q=80',
+    imageUrl: '/sid-party28.jpeg',
     popular: true,
   },
   {
@@ -37,7 +37,7 @@ export const MOCK_SERVICES: WeddingService[] = [
     description: 'Vibrant marigold & green foliage canopy with traditional flower swing & bolster seating.',
     price: 30000,
     unit: 'setup',
-    imageUrl: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80',
+    imageUrl: '/sid-party35.jpeg',
   },
   {
     id: 'dec-haldi',
@@ -47,7 +47,7 @@ export const MOCK_SERVICES: WeddingService[] = [
     description: 'Bright yellow marigold backdrop, brass urlis with flower petals & hand-painted mats.',
     price: 30000,
     unit: 'setup',
-    imageUrl: '/sid-party22.jpeg',
+    imageUrl: '/WhatsApp Image 2026-07-26 at 4.47.06 PM (1).jpeg',
     popular: true,
   },
   {
@@ -101,7 +101,7 @@ export const MOCK_SERVICES: WeddingService[] = [
     description: 'Vintage brass mirror, silk drapes, peacock feather motif, and royal wooden swing setup.',
     price: 28000,
     unit: 'booth',
-    imageUrl: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=800&q=80',
+    imageUrl: '/Gemini_Generated_Image_110eey110eey110e.png',
   },
   {
     id: 'dec-stage',
@@ -131,7 +131,7 @@ export const MOCK_SERVICES: WeddingService[] = [
     description: 'Grand traditional brass mandapam decorated with fresh jasmine, marigold, lotus garlands & banana trunk pillars.',
     price: 150000,
     unit: 'setup',
-    imageUrl: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80',
+    imageUrl: '/Gemini_Generated_Image_nlsfrwnlsfrwnlsf.png',
     popular: true,
   },
 
@@ -144,7 +144,7 @@ export const MOCK_SERVICES: WeddingService[] = [
     description: 'Handcrafted fresh Jasmine, Red Rose, Orchids & Pink Lotus Varmala pair for bride & groom.',
     price: 18000,
     unit: 'pair',
-    imageUrl: 'https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=800&q=80',
+    imageUrl: '/Gemini_Generated_Image_mwji35mwji35mwji.png',
     popular: true,
   },
 
@@ -157,7 +157,7 @@ export const MOCK_SERVICES: WeddingService[] = [
     description: 'Hand-carved wooden floral Doli decorated with silk drapes & flowers, carried by 4 uniformed palanquin bearers.',
     price: 25000,
     unit: 'entry',
-    imageUrl: '/sid-party40.jpeg',
+    imageUrl: '/Gemini_Generated_Image_mrs98imrs98imrs9.png',
   },
   {
     id: 'dec-nadaswaram',
@@ -167,7 +167,7 @@ export const MOCK_SERVICES: WeddingService[] = [
     description: 'Traditional auspicious live Nadaswaram music team playing classical ragas throughout the ceremony.',
     price: 35000,
     unit: 'per event',
-    imageUrl: '/ChatGPT Image Jul 28, 2026, 11_34_17 AM.png',
+    imageUrl: '/ChatGPT Image Jul 28, 2026, 04_57_21 PM.png',
     popular: true,
   },
 
@@ -180,7 +180,7 @@ export const MOCK_SERVICES: WeddingService[] = [
     description: '12-member traditional brass band with brass drums & trumpets welcoming groom procession.',
     price: 30000,
     unit: 'event',
-    imageUrl: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=800&q=80',
+    imageUrl: '/Gemini_Generated_Image_ccs34nccs34nccs3.png',
   },
   {
     id: 'dec-orchestra',
@@ -190,7 +190,7 @@ export const MOCK_SERVICES: WeddingService[] = [
     description: 'Full live orchestra with vocalists performing South Indian film songs & classical melodies during reception.',
     price: 60000,
     unit: 'performance',
-    imageUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
+    imageUrl: '/Gemini_Generated_Image_8f6wrb8f6wrb8f6w.png',
   },
   {
     id: 'dec-cold-fire',
@@ -200,7 +200,7 @@ export const MOCK_SERVICES: WeddingService[] = [
     description: 'Stunning 6 cold sparkler pyro jets for grand varmala & couple entry moments.',
     price: 18000,
     unit: 'event',
-    imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80',
+    imageUrl: '/Gemini_Generated_Image_la9ccmla9ccmla9c.png',
   },
   {
     id: 'dec-fog-machine',
@@ -210,7 +210,7 @@ export const MOCK_SERVICES: WeddingService[] = [
     description: 'Heavy cloud low fog dry ice effect for couple stage entry and first dance.',
     price: 15000,
     unit: 'event',
-    imageUrl: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=800&q=80',
+    imageUrl: '/Gemini_Generated_Image_drzo1ddrzo1ddrzo.png',
   },
   {
     id: 'dec-crackers',
@@ -220,7 +220,7 @@ export const MOCK_SERVICES: WeddingService[] = [
     description: 'Eco-friendly aerial flower shots and sparklers for outdoor celebration.',
     price: 25000,
     unit: 'event',
-    imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80',
+    imageUrl: '/Gemini_Generated_Image_glaxgjglaxgjglax.png',
   },
   {
     id: 'dec-colour-pots',
@@ -379,14 +379,14 @@ export const BUSINESS_OFFERINGS: BusinessOffering[] = [
     title: 'Birthday Celebrations',
     description: 'Themed parties with custom décor for every age and milestone.',
     iconKey: 'cake',
-    imageUrl: 'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=800&q=80',
+    imageUrl: '/WhatsApp Image 2026-07-26 at 4.47.07 PM.jpeg',
   },
   {
     id: 'engagement-ceremonies',
     title: 'Engagement Ceremonies',
     description: 'Floral arrangements, stage design and lighting for the ring ceremony.',
     iconKey: 'gem',
-    imageUrl: '/image.png',
+    imageUrl: '/indian-traditional-engagement-ceremony-exchanging-wedding-rings-bride-s-hands-henna-bangles-placing-ring-groom-s-450303546.webp',
   },
   {
     id: 'naming-ceremonies',
@@ -414,7 +414,7 @@ export const BUSINESS_OFFERINGS: BusinessOffering[] = [
     title: 'Photography & Videography',
     description: 'Pre-wedding shoots and full wedding day coverage - candid photography, drone footage, teasers and cinematic films.',
     iconKey: 'camera',
-    imageUrl: '/Sid4.png',
+    imageUrl: '/photography-videography-collage.jpg',
   },
   {
     id: 'maternity-photoshoot',
@@ -591,7 +591,7 @@ export const MOCK_GALLERY: GalleryItem[] = [
     title: 'Wedding Photography Package Showcase',
     category: 'photography',
     mediaType: 'image',
-    url: '/Sid6.png',
+    url: '/photography-videography-collage.jpg',
   },
 
   // Real client event photography - decoration & venue setups
@@ -601,6 +601,7 @@ export const MOCK_GALLERY: GalleryItem[] = [
     category: 'decoration',
     mediaType: 'image',
     url: '/sid-party14.jpeg',
+    rotate: -90,
   },
   {
     id: 'gal-11',
@@ -785,10 +786,10 @@ export const MOCK_GALLERY: GalleryItem[] = [
   // Real client wedding video footage
   {
     id: 'gal-45',
-    title: 'Wedding Celebration Highlights 1',
-    category: 'reception',
-    mediaType: 'video',
-    url: '/sid-video1.mp4',
+    title: 'Live Nadaswaram & Thavil Ensemble',
+    category: 'traditional',
+    mediaType: 'image',
+    url: '/ChatGPT Image Jul 28, 2026, 04_57_21 PM.png',
   },
   {
     id: 'gal-46',

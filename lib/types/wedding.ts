@@ -124,6 +124,8 @@ export interface GalleryItem {
   thumbnailUrl?: string;
   /** Additional images shown together in the lightbox for the same item (url is always included first). */
   images?: string[];
+  rotateClass?: string;
+  rotate?: number;
 }
 
 export interface Testimonial {

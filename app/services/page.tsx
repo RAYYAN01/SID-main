@@ -49,10 +49,7 @@ export default function ServicesPage() {
           >
             <div className="relative h-48 w-full">
               <Image src={offering.imageUrl} alt={offering.title} fill className="object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-maroon-950/70 via-maroon-950/10 to-transparent" />
-              <div className="absolute bottom-3 left-3 w-10 h-10 rounded-xl bg-gold-400 text-maroon-950 flex items-center justify-center shadow-md">
-                {ICONS[offering.iconKey]}
-              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-maroon-950/20 via-transparent to-transparent" />
             </div>
             <div className="p-6 space-y-2 flex-1 flex flex-col justify-between">
               <div>

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Sparkles,
+  Palette,
   ChevronRight,
   ChevronLeft,
   Check,
@@ -53,7 +53,7 @@ export default function CustomBuilderPage() {
   const [customDecorNotes, setCustomDecorNotes] = useState<string>('');
 
   const stepsList = [
-    { num: 1, title: 'Decoration', icon: <Sparkles className="w-4 h-4" /> },
+    { num: 1, title: 'Decoration', icon: <Palette className="w-4 h-4" /> },
     { num: 2, title: 'Food & Catering', icon: <Utensils className="w-4 h-4" /> },
     { num: 3, title: 'Photography', icon: <Camera className="w-4 h-4" /> },
     { num: 4, title: 'Bridal Makeup', icon: <HeartHandshake className="w-4 h-4" /> },
@@ -1012,7 +1012,7 @@ export default function CustomBuilderPage() {
           <GlassCard variant="dark" className="border-2 border-gold-400 shadow-2xl space-y-6">
             <div className="flex justify-between items-center border-b border-gold-400/40 pb-3">
               <h3 className="font-playfair text-lg font-bold text-gold-300 flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-gold-400" /> Your Selections
+                Your Selections
               </h3>
               <span className="text-[10px] uppercase font-bold text-gold-200 bg-maroon-900 px-2 py-0.5 rounded border border-gold-400/40">
                 Step {state.currentStep} of 9

@@ -40,7 +40,6 @@ import {
   Search,
   Trash2,
   Filter,
-  Sparkles,
   Plus,
   Edit3,
   LogOut,
@@ -263,7 +262,7 @@ export default function AdminDashboardPage() {
               Admin Portal
             </span>
             <span className="inline-flex items-center gap-1 text-xs text-emerald-700 font-bold">
-              <Sparkles className="w-3.5 h-3.5" /> Supabase Live Data Sync
+              Supabase Live Data Sync
             </span>
           </div>
           <h1 className="font-playfair text-3xl sm:text-5xl font-bold text-maroon-900 mt-2">

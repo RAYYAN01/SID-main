@@ -22,9 +22,9 @@ export const GoldButton: React.FC<GoldButtonProps> = ({
   ...props
 }) => {
   const sizeClasses = {
-    sm: 'px-4 py-2 text-[11px] uppercase tracking-widest font-bold rounded-lg gap-2',
-    md: 'px-6 py-3 text-xs uppercase tracking-widest font-bold rounded-xl gap-2.5 shadow-md',
-    lg: 'px-8 py-4 text-xs uppercase tracking-widest font-bold rounded-xl gap-3 shadow-xl',
+    sm: 'px-3.5 py-1.5 text-[10px] uppercase tracking-widest font-bold rounded-full gap-1.5',
+    md: 'px-5 py-2 text-[11px] uppercase tracking-widest font-bold rounded-full gap-2 shadow-sm',
+    lg: 'px-6 py-2.5 text-xs uppercase tracking-widest font-bold rounded-full gap-2 shadow-md',
   };
 
   const variantClasses = {

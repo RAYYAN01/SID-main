@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Sparkles, Menu, X, Calculator, Phone, User } from 'lucide-react';
+import { Menu, X, Calculator, Phone, User } from 'lucide-react';
 import { GoldButton } from '../ui/gold-button';
 import { BrandMark } from '../ui/brand-mark';
 import { cn } from '@/lib/utils';
@@ -30,15 +30,15 @@ export const Navbar: React.FC = () => {
   // - scrollY >= 1: 50% (0.5) opaqueness on first 1px scroll, then gradually increases to 1.0 (100%) as scroll reaches ~250px
   let opacity = 1;
   if (isLanding) {
-    if (scrollY === 0) {
+    if (scrollY === 0 && !mobileMenuOpen) {
       opacity = 0;
     } else {
       const scrollProgress = Math.min((scrollY - 1) / 250, 1);
-      opacity = 0.5 + 0.5 * scrollProgress;
+      opacity = mobileMenuOpen ? 1 : 0.5 + 0.5 * scrollProgress;
     }
   }
 
-  const isTransparent = isLanding && opacity === 0;
+  const isTransparent = isLanding && opacity === 0 && !mobileMenuOpen;
 
   const navLinks = [
     { href: '/', label: 'Home' },
@@ -52,24 +52,6 @@ export const Navbar: React.FC = () => {
 
   return (
     <header className={cn("z-50 transition-all duration-300", isLanding ? "fixed top-0 left-0 right-0" : "sticky top-0")}>
-      {/* Top Announcement Bar */}
-      <div
-        className="text-[10px] font-bold tracking-widest uppercase py-2 px-4 text-center flex items-center justify-center gap-4 border-b transition-all duration-300"
-        style={{
-          backgroundColor: isLanding ? `rgba(112, 12, 27, ${opacity * 0.9})` : 'rgba(112, 12, 27, 1)',
-          borderColor: `rgba(212, 175, 55, ${isTransparent ? 0.15 : 0.3})`,
-          color: 'rgba(247, 219, 167, 1)',
-        }}
-      >
-        <a href={SITE.phoneHref} className="hidden sm:inline-flex items-center gap-1.5 hover:text-white transition-colors">
-          <Phone className="w-3 h-3" /> {SITE.phoneDisplay}
-        </a>
-        <span className="hidden sm:inline text-gold-400">•</span>
-        <Link href="/contact" className="text-gold-300 hover:text-white underline underline-offset-4">
-          BOOK A CONSULTATION
-        </Link>
-      </div>
-
       {/* Main Header */}
       <div
         className="transition-all duration-300 border-b shadow-sm"
@@ -77,8 +59,8 @@ export const Navbar: React.FC = () => {
           backgroundColor: isLanding
             ? `rgba(255, 252, 247, ${opacity * 0.96})`
             : 'rgba(255, 252, 247, 0.95)',
-          backdropFilter: opacity > 0 ? 'blur(16px)' : 'none',
-          WebkitBackdropFilter: opacity > 0 ? 'blur(16px)' : 'none',
+          backdropFilter: opacity > 0 ? `blur(${opacity * 16}px)` : 'none',
+          WebkitBackdropFilter: opacity > 0 ? `blur(${opacity * 16}px)` : 'none',
           borderColor: `rgba(212, 175, 55, ${opacity * 0.3})`,
         }}
       >
@@ -86,8 +68,8 @@ export const Navbar: React.FC = () => {
           <div className="flex items-center justify-between h-20">
             
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2.5 group shrink-0">
-              <BrandMark className="w-10 h-10 sm:w-12 sm:h-12 group-hover:scale-105 transition-transform" />
+            <Link href="/" className="flex items-center gap-2 group shrink-0">
+              <BrandMark className="w-9 h-9 sm:w-12 sm:h-12 group-hover:scale-105 transition-transform" />
               <div>
                 <span
                   className={cn(
@@ -99,7 +81,7 @@ export const Navbar: React.FC = () => {
                 </span>
                 <span
                   className={cn(
-                    "text-[8px] sm:text-[9px] uppercase font-semibold tracking-widest block mt-1 transition-colors duration-300",
+                    "text-[8px] sm:text-[9px] uppercase font-semibold tracking-widest hidden sm:block mt-1 transition-colors duration-300",
                     isTransparent ? "text-gold-300/90" : "text-gold-700"
                   )}
                 >
@@ -147,25 +129,23 @@ export const Navbar: React.FC = () => {
                 </button>
               </Link>
               <Link href="/custom-builder">
-                <GoldButton size="sm" variant="gold" icon={<Sparkles className="w-3.5 h-3.5" />}>
+                <GoldButton size="sm" variant="gold">
                   Build Package
                 </GoldButton>
               </Link>
             </div>
 
-            {/* Mobile Menu Button */}
-            <div className="lg:hidden flex items-center gap-2">
-              <Link href="/custom-builder">
-                <GoldButton size="sm" variant="gold">
-                  <Calculator className="w-4 h-4" />
-                </GoldButton>
-              </Link>
+            {/* Mobile Burger Menu Button */}
+            <div className="lg:hidden flex items-center">
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className={cn(
-                  "p-2 rounded-lg transition-colors",
-                  isTransparent ? "text-silk-50 hover:bg-white/10" : "text-maroon-800 hover:bg-gold-100"
+                  "p-2.5 rounded-xl border transition-all cursor-pointer flex items-center justify-center text-xs font-bold uppercase tracking-wider",
+                  isTransparent
+                    ? "bg-white/10 text-silk-50 border-gold-400/40 hover:bg-white/20"
+                    : "bg-maroon-900 text-gold-300 border-gold-400/50 hover:bg-maroon-950"
                 )}
+                aria-label="Toggle Navigation Menu"
               >
                 {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
@@ -173,35 +153,41 @@ export const Navbar: React.FC = () => {
           </div>
         </div>
 
-        {/* Mobile Drawer Navigation */}
+        {/* Mobile Slide Drawer Overlay */}
         {mobileMenuOpen && (
-          <div className="lg:hidden bg-maroon-950/95 text-silk-50 border-t border-gold-400/30 px-4 pt-3 pb-6 space-y-2 shadow-2xl backdrop-blur-xl animate-in slide-in-from-top duration-200">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className={cn(
-                  'block px-4 py-2.5 rounded-lg text-xs font-bold uppercase tracking-widest transition-colors',
-                  pathname === link.href
-                    ? 'bg-maroon-800 text-gold-300 font-bold border border-gold-400/40'
-                    : 'text-silk-100 hover:bg-maroon-900/80 hover:text-gold-300'
-                )}
-              >
-                {link.label}
-              </Link>
-            ))}
-            <div className="pt-2 space-y-2">
-              <Link href="/custom-builder" onClick={() => setMobileMenuOpen(false)}>
-                <GoldButton fullWidth variant="gold" icon={<Sparkles className="w-4 h-4" />}>
-                  Build Custom Package
-                </GoldButton>
-              </Link>
-              <Link href="/admin" onClick={() => setMobileMenuOpen(false)}>
-                <GoldButton fullWidth variant="dark" icon={<User className="w-4 h-4" />}>
-                  Admin Login
-                </GoldButton>
-              </Link>
+          <div className="lg:hidden bg-maroon-950 text-silk-50 border-b-2 border-gold-400 shadow-2xl backdrop-blur-2xl animate-in slide-in-from-top duration-200">
+            <div className="max-w-[1440px] mx-auto p-4 sm:p-6 space-y-4">
+              <div className="grid grid-cols-1 gap-2">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={cn(
+                      'flex items-center justify-between px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-200 border',
+                      pathname === link.href
+                        ? 'bg-maroon-800 text-gold-300 font-bold border-gold-400/60 shadow-md'
+                        : 'bg-maroon-900/90 text-silk-50 hover:bg-maroon-900 hover:text-gold-300 border-gold-400/20'
+                    )}
+                  >
+                    <span className="text-silk-50 font-bold tracking-wider">{link.label}</span>
+                    <span className="text-gold-400 text-xs font-bold">→</span>
+                  </Link>
+                ))}
+              </div>
+
+              <div className="pt-3 border-t border-gold-400/30 grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <Link href="/custom-builder" onClick={() => setMobileMenuOpen(false)}>
+                  <GoldButton fullWidth variant="gold">
+                    Build Custom Package
+                  </GoldButton>
+                </Link>
+                <Link href="/admin" onClick={() => setMobileMenuOpen(false)}>
+                  <GoldButton fullWidth variant="dark" icon={<User className="w-4 h-4" />}>
+                    Admin Portal Login
+                  </GoldButton>
+                </Link>
+              </div>
             </div>
           </div>
         )}

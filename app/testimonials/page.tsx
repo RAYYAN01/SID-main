@@ -43,6 +43,9 @@ export default function TestimonialsPage() {
                   <Star key={i} className="w-4 h-4 fill-current" />
                 ))}
               </div>
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100 border border-emerald-300 text-emerald-800 text-[11px] font-bold shadow-sm">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" /> Google Verified
+              </span>
               <p className="text-sm text-maroon-900 italic leading-relaxed font-sans">
                 &ldquo;{t.comment}&rdquo;
               </p>

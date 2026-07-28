@@ -16,7 +16,7 @@ ON CONFLICT (id) DO NOTHING;
 INSERT INTO services (id, category, name, description, price, unit, image_url, popular) VALUES
 ('dec-saptapadi-mandapam', 'decoration', 'Saptapadi Royal Brass Mandapam', 'Grand traditional brass mandapam decorated with fresh jasmine & lotus.', 150000.00, 'setup', '/sid-party29.jpeg', true),
 ('dec-chepparam', 'decoration', 'Traditional Chepparam Mandapam Backdrop', 'Authentic temple architectural backdrop with brass lamps and golden drapes.', 85000.00, 'setup', '/wedding_destination_1_20251028.jpg', false),
-('dec-nadaswaram', 'decoration', 'Live Nadaswaram & Thavil Artists', 'Traditional auspicious live Nadaswaram ensemble.', 35000.00, 'per event', '/ChatGPT Image Jul 28, 2026, 11_34_17 AM.png', true),
+('dec-nadaswaram', 'decoration', 'Live Nadaswaram & Thavil Artists', 'Traditional auspicious live Nadaswaram ensemble.', 35000.00, 'per event', '/ChatGPT Image Jul 28, 2026, 04_57_21 PM.png', true),
 ('food-veg-standard', 'food', 'Standard Banana Leaf Sadhya (22 Varieties)', 'Traditional authentic South Indian vegetarian meal served on fresh banana leaf.', 350.00, 'per plate', '/onam-sadhya-lunch-menu-1.webp', true),
 ('food-veg-gold', 'food', 'Gold Royal Sadhya (32 Varieties + Live Dosa)', 'Grand feast with payasam counters, live stalls, and welcome drinks.', 550.00, 'per plate', '/onam-sadhya-lunch-menu-1.webp', false),
 ('photo-candid-gold', 'photography', '4K Cinematic Candid & Drone Reel Package', '2 Candid Photographers, 2 Cinematographers, Drone Reels & Karizma Album.', 180000.00, 'package', 'https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=800&q=80', true),
