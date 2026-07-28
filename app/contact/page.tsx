@@ -39,7 +39,7 @@ export default function ContactPage() {
  ${contactData.notes ? `*Requirements:* ${contactData.notes}` : ''}
     `.trim();
 
-    const waUrl = `https://wa.me/918858362367?text=${encodeURIComponent(message)}`;
+    const waUrl = getWhatsAppUrl(message);
     window.open(waUrl, '_blank');
   };
 

@@ -15,24 +15,24 @@ function getInitials(name: string): string {
 
 export default function TestimonialsPage() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+    <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-16">
       
       {/* Header */}
       <div className="text-center space-y-4 max-w-3xl mx-auto">
         <span className="text-gold-600 font-semibold text-xs uppercase tracking-widest bg-gold-100 px-3 py-1 rounded-full border border-gold-300">
           Verified Google Reviews
         </span>
-        <h1 className="font-playfair text-4xl sm:text-6xl font-bold text-maroon-900">
+        <h1 className="font-playfair text-3xl sm:text-5xl lg:text-6xl font-bold text-maroon-900">
           What Families Told Us Afterward
         </h1>
-        <p className="text-maroon-700/80 text-base">
+        <p className="text-maroon-700/80 text-sm sm:text-base">
           Authentic client feedback and reviews from Google for SID Events.
         </p>
         <TraditionalBorder />
       </div>
 
       {/* Reviews Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 sm:gap-8">
         {MOCK_TESTIMONIALS.map((t) => (
           <GlassCard key={t.id} variant="warm" className="flex flex-col justify-between space-y-6 relative p-8">
             <Quote className="absolute top-4 right-4 w-10 h-10 text-gold-400/30" />

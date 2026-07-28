@@ -243,22 +243,22 @@ export default function HomePage() {
       </section>
 
       {/* 2. STATS BAR */}
-      <section className="max-w-7xl mx-auto px-4 -mt-10 relative z-20">
-        <div className="bg-silk-50 border-2 border-gold-400/40 rounded-3xl p-8 shadow-xl grid grid-cols-2 md:grid-cols-4 gap-6 text-maroon-900">
+      <section className="max-w-[1600px] mx-auto px-4 -mt-10 relative z-20">
+        <div className="bg-silk-50 border-2 border-gold-400/40 rounded-3xl p-6 sm:p-8 shadow-xl grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-maroon-900">
           {stats.map((stat, idx) => (
             <div key={idx} className="text-center space-y-2 border-r last:border-0 border-gold-400/20 px-2">
               <div className="flex justify-center">{stat.icon}</div>
-              <div className="text-3xl sm:text-4xl font-bold font-outfit maroon-text-gradient">
+              <div className="text-2xl sm:text-4xl font-bold font-outfit maroon-text-gradient">
                 <AnimatedCounter value={stat.value} />
               </div>
-              <div className="text-[10px] uppercase font-bold text-maroon-700 tracking-widest">{stat.label}</div>
+              <div className="text-[9px] sm:text-[10px] uppercase font-bold text-maroon-700 tracking-widest">{stat.label}</div>
             </div>
           ))}
         </div>
       </section>
 
       {/* 2B. SERVICES TEASER */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 space-y-12">
+      <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 space-y-12">
         <div className="text-center space-y-4 max-w-2xl mx-auto">
           <span className="text-[10px] font-bold text-maroon-800 uppercase tracking-widest bg-gold-100 px-4 py-1 rounded-full border border-gold-400/40">
             WHAT WE DO
@@ -294,7 +294,7 @@ export default function HomePage() {
       </section>
 
       {/* 3. THE 4 SACRED PILLARS OF SOUTH INDIAN WEDDINGS */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 space-y-16">
+      <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 space-y-16">
         <div className="text-center space-y-4 max-w-3xl mx-auto">
           <span className="text-[10px] font-bold text-maroon-800 uppercase tracking-widest bg-gold-100 px-4 py-1 rounded-full border border-gold-400/40">
             HERITAGE CRAFTSMANSHIP
@@ -308,7 +308,7 @@ export default function HomePage() {
           <TraditionalBorder />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-8">
           {pillars.map((p, idx) => (
             <div key={idx} className="flex flex-col justify-between bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
               <div className="relative h-64 w-full">
@@ -337,7 +337,7 @@ export default function HomePage() {
 
       {/* 4. STANDARD WEDDING PACKAGES */}
       <section className="bg-maroon-950 text-silk-50 py-20 border-y-2 border-gold-400/40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
           
           <div className="text-center space-y-4 max-w-3xl mx-auto">
             <span className="text-[10px] font-bold text-gold-300 uppercase tracking-widest bg-maroon-900 px-4 py-1 rounded-full border border-gold-400/30">
@@ -352,7 +352,7 @@ export default function HomePage() {
             <TraditionalBorder />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-4 gap-8">
             {MOCK_STANDARD_PACKAGES.map((pkg) => (
               <GlassCard
                 key={pkg.id}
@@ -399,7 +399,7 @@ export default function HomePage() {
       </section>
 
       {/* 5. INTERACTIVE VISUAL GALLERY SHOWCASE */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 space-y-12">
+      <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-20 space-y-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gold-400/30 pb-6">
           <div>
             <span className="text-[10px] font-bold text-maroon-800 uppercase tracking-widest">VISUAL HERITAGE</span>
@@ -431,7 +431,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
           {filteredGallery.map((item, i) => (
             <div
               key={i}
@@ -457,7 +457,7 @@ export default function HomePage() {
       </section>
 
       {/* 5B. WHY CHOOSE US */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 space-y-12">
+      <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-20 space-y-12">
         <div className="text-center space-y-4 max-w-2xl mx-auto">
           <span className="text-[10px] font-bold text-maroon-800 uppercase tracking-widest bg-gold-100 px-4 py-1 rounded-full border border-gold-400/40">
             WHY CHOOSE US
@@ -467,7 +467,7 @@ export default function HomePage() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6 gap-6">
           {whyChooseUs.map((item, idx) => (
             <div key={idx} className="p-6 bg-white rounded-2xl shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border border-gold-200/40 space-y-2">
               <div className="w-8 h-8 rounded-lg bg-maroon-900 text-gold-300 flex items-center justify-center text-xs font-bold font-outfit">
@@ -482,7 +482,7 @@ export default function HomePage() {
 
       {/* 5C. OUR PROCESS */}
       <section className="bg-maroon-950 text-silk-50 py-20 border-y-2 border-gold-400/40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
           <div className="text-center space-y-4 max-w-2xl mx-auto">
             <span className="text-[10px] font-bold text-gold-300 uppercase tracking-widest bg-maroon-900 px-4 py-1 rounded-full border border-gold-400/30">
               HOW IT WORKS
@@ -509,7 +509,7 @@ export default function HomePage() {
 
       {/* 6. VERIFIED CLIENT TESTIMONIALS */}
       <section className="bg-maroon-950 text-silk-50 py-20 border-t-2 border-gold-400/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
           <div className="text-center space-y-4 max-w-2xl mx-auto">
             <span className="text-[10px] font-bold text-gold-300 uppercase tracking-widest bg-maroon-900 px-4 py-1 rounded-full border border-gold-400/30">
               CLIENT GRATITUDE
@@ -520,7 +520,7 @@ export default function HomePage() {
             <TraditionalBorder />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6 gap-6">
             {MOCK_TESTIMONIALS.slice(0, 6).map((t) => (
               <GlassCard key={t.id} variant="dark" className="flex flex-col justify-between space-y-6 p-8 border border-gold-400/30">
                 <div className="space-y-4">

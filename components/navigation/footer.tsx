@@ -9,9 +9,9 @@ import { SITE } from '@/lib/site-config';
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="bg-maroon-950 text-silk-100 pt-16 pb-12 border-t-4 border-gold-400">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+    <footer className="bg-maroon-950 text-silk-100 pt-12 sm:pt-16 pb-12 border-t-4 border-gold-400">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 xl:gap-12">
 
           {/* Brand Col */}
           <div className="space-y-4">

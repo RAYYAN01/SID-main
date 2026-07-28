@@ -3,7 +3,7 @@ import { CustomBuilderState } from './types/wedding';
 export function getWhatsAppShareUrl(
   quoteId: string,
   state: CustomBuilderState,
-  phone: string = '918858362367'
+  phone: string = '918095408404'
 ): string {
   const selectedDecorCount = Object.keys(state.selectedServices || {}).length;
   const message = `
@@ -36,7 +36,7 @@ export function getWhatsAppBookingRequestUrl(
   },
   state: CustomBuilderState,
   refCode: string,
-  phone: string = '918858362367'
+  phone: string = '918095408404'
 ): string {
   const selectedDecorCount = Object.keys(state.selectedServices || {}).length;
   const message = `

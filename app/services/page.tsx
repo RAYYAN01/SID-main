@@ -23,15 +23,15 @@ const ICONS: Record<BusinessOffering['iconKey'], React.ReactNode> = {
 
 export default function ServicesPage() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+    <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-16">
       <div className="text-center space-y-4 max-w-3xl mx-auto">
         <span className="text-gold-600 font-semibold text-xs uppercase tracking-widest bg-gold-100 px-3 py-1 rounded-full border border-gold-300">
           What We Do
         </span>
-        <h1 className="font-playfair text-4xl sm:text-6xl font-bold text-maroon-900">
+        <h1 className="font-playfair text-3xl sm:text-5xl lg:text-6xl font-bold text-maroon-900">
           Our Services
         </h1>
-        <p className="text-maroon-700/80 text-base">
+        <p className="text-maroon-700/80 text-sm sm:text-base">
           From weddings to corporate events, we plan and run every occasion end to end.
         </p>
         <TraditionalBorder />
@@ -41,7 +41,7 @@ export default function ServicesPage() {
         <Image src="/Sid1.png" alt="Dream. Plan. Create. Celebrate. - the SID Events planning desk" fill className="object-cover" />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 sm:gap-8">
         {BUSINESS_OFFERINGS.map((offering) => (
           <div
             key={offering.id}

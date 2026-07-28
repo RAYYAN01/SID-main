@@ -9,6 +9,7 @@ import { ShieldCheck } from 'lucide-react';
 
 import { getWhatsAppBookingRequestUrl } from '@/lib/whatsapp';
 import { saveAdminQuote } from '@/lib/store/admin-store';
+import { SITE } from '@/lib/site-config';
 
 export default function BookingPage() {
   const router = useRouter();
@@ -31,7 +32,7 @@ export default function BookingPage() {
     setIsSubmitting(true);
 
     const refCode = `BK-${Math.floor(1000 + Math.random() * 9000)}`;
-    const waUrl = getWhatsAppBookingRequestUrl(formData, state, refCode, '918858362367');
+    const waUrl = getWhatsAppBookingRequestUrl(formData, state, refCode, SITE.whatsappNumber);
 
     const selectedCount = Object.keys(state.selectedServices || {}).length;
     const estCost = (state.catering?.guestCount || 500) * 350 + selectedCount * 12000 + 45000;

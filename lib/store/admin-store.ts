@@ -1,4 +1,6 @@
 import { supabase, isSupabaseConfigured } from '../supabase';
+import { MOCK_SERVICES, MOCK_STANDARD_PACKAGES } from '../mock-data';
+import { Service, StandardPackage } from '../types/wedding';
 
 export interface AdminQuoteRequest {
   id: string;
@@ -32,6 +34,8 @@ export interface AdminInquiry {
 
 const STORAGE_KEY_QUOTES = 'sid_events_admin_quotes_v1';
 const STORAGE_KEY_INQUIRIES = 'sid_events_admin_inquiries_v1';
+const STORAGE_KEY_SERVICES = 'sid_events_admin_services_v1';
+const STORAGE_KEY_PACKAGES = 'sid_events_admin_packages_v1';
 
 const INITIAL_QUOTES: AdminQuoteRequest[] = [
   {
@@ -86,6 +90,7 @@ const INITIAL_INQUIRIES: AdminInquiry[] = [
   },
 ];
 
+// --- 1. Quote Requests CRUD ---
 export function getAdminQuotes(): AdminQuoteRequest[] {
   if (typeof window === 'undefined') return INITIAL_QUOTES;
   const data = localStorage.getItem(STORAGE_KEY_QUOTES);
@@ -113,7 +118,6 @@ export function saveAdminQuote(quote: Omit<AdminQuoteRequest, 'id' | 'createdAt'
     localStorage.setItem(STORAGE_KEY_QUOTES, JSON.stringify(updated));
   }
 
-  // Sync to Supabase if configured
   if (isSupabaseConfigured()) {
     supabase.from('quotations').insert([
       {
@@ -135,7 +139,16 @@ export function saveAdminQuote(quote: Omit<AdminQuoteRequest, 'id' | 'createdAt'
   return newRecord;
 }
 
-export function updateQuoteStatus(id: string, status: AdminQuoteRequest['status']) {
+export function updateAdminQuote(updatedQuote: AdminQuoteRequest): AdminQuoteRequest[] {
+  const current = getAdminQuotes();
+  const updated = current.map((q) => (q.id === updatedQuote.id ? updatedQuote : q));
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(STORAGE_KEY_QUOTES, JSON.stringify(updated));
+  }
+  return updated;
+}
+
+export function updateQuoteStatus(id: string, status: AdminQuoteRequest['status']): AdminQuoteRequest[] {
   const current = getAdminQuotes();
   const updated = current.map((q) => (q.id === id ? { ...q, status } : q));
   if (typeof window !== 'undefined') {
@@ -144,7 +157,7 @@ export function updateQuoteStatus(id: string, status: AdminQuoteRequest['status'
   return updated;
 }
 
-export function deleteAdminQuote(id: string) {
+export function deleteAdminQuote(id: string): AdminQuoteRequest[] {
   const current = getAdminQuotes();
   const updated = current.filter((q) => q.id !== id);
   if (typeof window !== 'undefined') {
@@ -153,6 +166,7 @@ export function deleteAdminQuote(id: string) {
   return updated;
 }
 
+// --- 2. Inquiries CRUD ---
 export function getAdminInquiries(): AdminInquiry[] {
   if (typeof window === 'undefined') return INITIAL_INQUIRIES;
   const data = localStorage.getItem(STORAGE_KEY_INQUIRIES);
@@ -179,14 +193,125 @@ export function saveAdminInquiry(inquiry: Omit<AdminInquiry, 'id' | 'createdAt' 
   if (typeof window !== 'undefined') {
     localStorage.setItem(STORAGE_KEY_INQUIRIES, JSON.stringify(updated));
   }
+
+  if (isSupabaseConfigured()) {
+    supabase.from('inquiries').insert([
+      {
+        id: newRecord.id,
+        full_name: newRecord.fullName,
+        phone: newRecord.phone,
+        wedding_date: newRecord.weddingDate || null,
+        notes: newRecord.notes || '',
+        status: newRecord.status,
+      },
+    ]).then(({ error }) => {
+      if (error) console.error('Supabase inquiry sync error:', error);
+    });
+  }
+
   return newRecord;
 }
 
-export function updateInquiryStatus(id: string, status: AdminInquiry['status']) {
+export function updateInquiryStatus(id: string, status: AdminInquiry['status']): AdminInquiry[] {
   const current = getAdminInquiries();
   const updated = current.map((inq) => (inq.id === id ? { ...inq, status } : inq));
   if (typeof window !== 'undefined') {
     localStorage.setItem(STORAGE_KEY_INQUIRIES, JSON.stringify(updated));
+  }
+  return updated;
+}
+
+export function deleteAdminInquiry(id: string): AdminInquiry[] {
+  const current = getAdminInquiries();
+  const updated = current.filter((inq) => inq.id !== id);
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(STORAGE_KEY_INQUIRIES, JSON.stringify(updated));
+  }
+  return updated;
+}
+
+// --- 3. Services Catalog CRUD ---
+export function getAdminServices(): Service[] {
+  if (typeof window === 'undefined') return MOCK_SERVICES;
+  const data = localStorage.getItem(STORAGE_KEY_SERVICES);
+  if (!data) {
+    localStorage.setItem(STORAGE_KEY_SERVICES, JSON.stringify(MOCK_SERVICES));
+    return MOCK_SERVICES;
+  }
+  try {
+    return JSON.parse(data);
+  } catch (e) {
+    return MOCK_SERVICES;
+  }
+}
+
+export function saveAdminService(newService: Omit<Service, 'id'>): Service[] {
+  const current = getAdminServices();
+  const created: Service = { ...newService, id: `svc-${Date.now()}` };
+  const updated = [created, ...current];
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(STORAGE_KEY_SERVICES, JSON.stringify(updated));
+  }
+  return updated;
+}
+
+export function updateAdminService(service: Service): Service[] {
+  const current = getAdminServices();
+  const updated = current.map((s) => (s.id === service.id ? service : s));
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(STORAGE_KEY_SERVICES, JSON.stringify(updated));
+  }
+  return updated;
+}
+
+export function deleteAdminService(id: string): Service[] {
+  const current = getAdminServices();
+  const updated = current.filter((s) => s.id !== id);
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(STORAGE_KEY_SERVICES, JSON.stringify(updated));
+  }
+  return updated;
+}
+
+// --- 4. Wedding Packages CRUD ---
+export function getAdminPackages(): StandardPackage[] {
+  if (typeof window === 'undefined') return MOCK_STANDARD_PACKAGES;
+  const data = localStorage.getItem(STORAGE_KEY_PACKAGES);
+  if (!data) {
+    localStorage.setItem(STORAGE_KEY_PACKAGES, JSON.stringify(MOCK_STANDARD_PACKAGES));
+    return MOCK_STANDARD_PACKAGES;
+  }
+  try {
+    return JSON.parse(data);
+  } catch (e) {
+    return MOCK_STANDARD_PACKAGES;
+  }
+}
+
+export function saveAdminPackage(newPkg: Omit<StandardPackage, 'id'>): StandardPackage[] {
+  const current = getAdminPackages();
+  const created: StandardPackage = { ...newPkg, id: `pkg-${Date.now()}` };
+  const updated = [...current, created];
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(STORAGE_KEY_PACKAGES, JSON.stringify(updated));
+  }
+  return updated;
+}
+
+export function updateAdminPackage(pkg: StandardPackage): StandardPackage[] {
+  const current = getAdminPackages();
+  const updated = current.map((p) => (p.id === pkg.id ? pkg : p));
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(STORAGE_KEY_PACKAGES, JSON.stringify(updated));
+  }
+  return updated;
+}
+
+export function deleteAdminPackage(id: string): StandardPackage[] {
+  const current = getAdminPackages();
+  const updated = current.filter((p) => p.id !== id);
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(STORAGE_KEY_PACKAGES, JSON.stringify(updated));
   }
   return updated;
 }
