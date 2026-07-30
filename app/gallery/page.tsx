@@ -2,13 +2,20 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { MOCK_GALLERY } from '@/lib/mock-data';
+import { GalleryItem } from '@/lib/types/wedding';
+import { getGalleryItems } from '@/lib/data/gallery';
 import { TraditionalBorder } from '@/components/ui/traditional-border';
+import { LoadingState } from '@/components/builder/EmptyState';
 import { X, ZoomIn, PlayCircle, Images, VolumeX } from 'lucide-react';
 
 export default function GalleryPage() {
   const [activeCategory, setActiveCategory] = useState<string>('all');
-  const [lightboxItem, setLightboxItem] = useState<typeof MOCK_GALLERY[0] | null>(null);
+  const [lightboxItem, setLightboxItem] = useState<GalleryItem | null>(null);
+  const [items, setItems] = useState<GalleryItem[] | null>(null);
+
+  useEffect(() => {
+    getGalleryItems().then(setItems);
+  }, []);
 
   useEffect(() => {
     if (!lightboxItem) return;
@@ -27,9 +34,9 @@ export default function GalleryPage() {
     { id: 'photography', label: 'Bridal Photography' },
   ];
 
-  const baseItems = activeCategory === 'all'
-    ? MOCK_GALLERY
-    : MOCK_GALLERY.filter((item) => item.category === activeCategory);
+  const baseItems = !items ? [] : activeCategory === 'all'
+    ? items
+    : items.filter((item) => item.category === activeCategory);
 
   const filteredItems = [...baseItems].sort((a, b) => {
     if (a.mediaType === 'video' && b.mediaType !== 'video') return -1;
@@ -72,6 +79,9 @@ export default function GalleryPage() {
       </div>
 
       {/* Gallery Grid */}
+      {items === null ? (
+        <LoadingState label="Loading gallery..." />
+      ) : (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 sm:gap-8">
         {filteredItems.map((item) => (
           <div
@@ -128,6 +138,7 @@ export default function GalleryPage() {
           </div>
         ))}
       </div>
+      )}
 
       {/* Lightbox Modal */}
       {lightboxItem && (

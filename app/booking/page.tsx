@@ -2,40 +2,69 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useWeddingBuilder } from '@/lib/store/wedding-builder-context';
+import { useEventBuilder } from '@/lib/store/event-builder-context';
 import { GlassCard } from '@/components/ui/glass-card';
 import { GoldButton } from '@/components/ui/gold-button';
-import { ShieldCheck } from 'lucide-react';
+import { AlertCircle, ShieldCheck } from 'lucide-react';
 
 import { getWhatsAppBookingRequestUrl } from '@/lib/whatsapp';
 import { saveAdminQuote } from '@/lib/store/admin-store';
 import { SITE } from '@/lib/site-config';
+import { getCartLines, getEstimatedTotal } from '@/lib/builder/selectors';
+
+const CATEGORY_LABELS: Record<string, string> = {
+  decoration: 'Decoration',
+  photography: 'Photography & Videography',
+  catering: 'Catering',
+  venue: 'Venue',
+  additional_services: 'Additional Services',
+};
+
+function formatCurrency(amount: number): string {
+  return `₹${amount.toLocaleString('en-IN')}`;
+}
 
 export default function BookingPage() {
   const router = useRouter();
-  const { state } = useWeddingBuilder();
+  const { state } = useEventBuilder();
+  const cartLines = getCartLines(state);
+  const estimatedTotal = getEstimatedTotal(state);
 
-  const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
-    weddingDate: '',
-    venueCity: 'Davanagere',
+  const [formData, setFormData] = useState(() => ({
+    fullName: state.eventDetails.customerName,
+    email: state.eventDetails.customerEmail,
+    phone: state.eventDetails.customerPhone,
+    weddingDate: state.eventDetails.date,
+    venueCity: state.eventDetails.location || 'Davanagere',
     venueAddress: '',
-    notes: '',
-  });
+    notes: state.eventDetails.specialRequirements,
+  }));
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [friendlyErrors, setFriendlyErrors] = useState<string[]>([]);
+
+  const validate = (): string[] => {
+    const errors: string[] = [];
+    if (!formData.fullName.trim()) errors.push('We still need your name before submitting your enquiry.');
+    if (!formData.phone.trim()) errors.push('We still need your phone number before submitting your enquiry.');
+    if (!formData.weddingDate) errors.push('Please choose a valid event date.');
+    return errors;
+  };
 
   const handleSubmitRequest = (e: React.FormEvent) => {
     e.preventDefault();
+    const errors = validate();
+    if (errors.length > 0) {
+      setFriendlyErrors(errors);
+      return;
+    }
+    setFriendlyErrors([]);
     setIsSubmitting(true);
 
     const refCode = `BK-${Math.floor(1000 + Math.random() * 9000)}`;
     const waUrl = getWhatsAppBookingRequestUrl(formData, state, refCode, SITE.whatsappNumber);
 
-    const selectedCount = Object.keys(state.selectedServices || {}).length;
-    const estCost = (state.catering?.guestCount || 500) * 350 + selectedCount * 12000 + 45000;
+    const categorySummary = Array.from(new Set(cartLines.map((l) => CATEGORY_LABELS[l.categoryKey] || l.categoryKey))).join(', ') || 'custom';
 
     saveAdminQuote({
       refCode,
@@ -45,12 +74,12 @@ export default function BookingPage() {
       weddingDate: formData.weddingDate,
       venueCity: formData.venueCity,
       venueAddress: formData.venueAddress,
-      guestCount: state.catering?.guestCount || 500,
-      cateringTier: state.catering?.packageTier || 'standard',
-      photographyTier: state.photography?.packageTier || 'standard',
-      purohitTier: state.purohit?.packageTier || 'standard',
-      selectedServicesCount: selectedCount,
-      estimatedCost: estCost,
+      guestCount: state.eventDetails.guestCount,
+      cateringTier: categorySummary,
+      photographyTier: state.eventTypeId || 'wedding',
+      purohitTier: state.selectedPackageId || 'custom',
+      selectedServicesCount: cartLines.length,
+      estimatedCost: estimatedTotal,
       notes: formData.notes,
     });
 
@@ -86,12 +115,20 @@ export default function BookingPage() {
               Event & Customer Contact Information
             </h3>
 
-            <form onSubmit={handleSubmitRequest} className="space-y-4">
+            {friendlyErrors.length > 0 && (
+              <div className="flex items-start gap-2 text-xs bg-amber-50 border border-amber-300 text-amber-900 rounded-xl px-4 py-3">
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                <ul className="space-y-1">
+                  {friendlyErrors.map((err) => <li key={err}>{err}</li>)}
+                </ul>
+              </div>
+            )}
+
+            <form onSubmit={handleSubmitRequest} className="space-y-4" noValidate>
               <div>
-                <label className="block text-xs font-bold text-maroon-900 mb-1">Full Name</label>
+                <label className="block text-xs font-bold text-maroon-900 mb-1">Full Name <span className="text-rose-600">*</span></label>
                 <input
                   type="text"
-                  required
                   placeholder="e.g. Aditya Hegde"
                   value={formData.fullName}
                   onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
@@ -101,10 +138,9 @@ export default function BookingPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-maroon-900 mb-1">Phone Number</label>
+                  <label className="block text-xs font-bold text-maroon-900 mb-1">Phone Number <span className="text-rose-600">*</span></label>
                   <input
                     type="tel"
-                    required
                     placeholder="+91 98765 43210"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
@@ -116,7 +152,6 @@ export default function BookingPage() {
                   <label className="block text-xs font-bold text-maroon-900 mb-1">Email Address</label>
                   <input
                     type="email"
-                    required
                     placeholder="aditya@example.com"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -127,10 +162,10 @@ export default function BookingPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-maroon-900 mb-1">Wedding Date</label>
+                  <label className="block text-xs font-bold text-maroon-900 mb-1">Event Date <span className="text-rose-600">*</span></label>
                   <input
                     type="date"
-                    required
+                    min={new Date().toISOString().split('T')[0]}
                     value={formData.weddingDate}
                     onChange={(e) => setFormData({ ...formData, weddingDate: e.target.value })}
                     className="w-full bg-white border border-gold-300 rounded-xl px-4 py-2.5 text-sm text-maroon-900 transition-all duration-200 focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-400/30"
@@ -157,7 +192,6 @@ export default function BookingPage() {
                 <label className="block text-xs font-bold text-maroon-900 mb-1">Venue Address / Hall Name</label>
                 <input
                   type="text"
-                  required
                   placeholder="e.g. Kamana Bhavana, PJ Extension"
                   value={formData.venueAddress}
                   onChange={(e) => setFormData({ ...formData, venueAddress: e.target.value })}
@@ -194,28 +228,22 @@ export default function BookingPage() {
 
             <div className="space-y-2 text-xs text-gold-100/90">
               <div className="flex justify-between">
-                <span>Decoration Items:</span>
-                <span className="font-bold">{Object.keys(state.selectedServices).length} selected</span>
+                <span>Guest Count:</span>
+                <span className="font-bold">{state.eventDetails.guestCount} guests</span>
               </div>
-              <div className="flex justify-between">
-                <span>Catering:</span>
-                <span className="font-bold capitalize">{state.catering.packageTier} &middot; {state.catering.guestCount} guests</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Photography:</span>
-                <span className="font-bold capitalize">{state.photography.packageTier}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Bridal Makeup:</span>
-                <span className="font-bold capitalize">{state.makeup.packageTier}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Purohit:</span>
-                <span className="font-bold capitalize">{state.purohit.packageTier}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Dancers & Music:</span>
-                <span className="font-bold capitalize">{state.dancers.style.replace('_', ' ')}</span>
+              {cartLines.length === 0 ? (
+                <p className="text-gold-200/70 py-2">No selections yet - you can still send this request and add details on a call.</p>
+              ) : (
+                cartLines.map((line) => (
+                  <div key={line.id} className="flex justify-between">
+                    <span>{CATEGORY_LABELS[line.categoryKey] || line.categoryKey}:</span>
+                    <span className="font-bold">{line.name}{line.quantity > 1 ? ` x${line.quantity}` : ''}</span>
+                  </div>
+                ))
+              )}
+              <div className="flex justify-between border-t border-gold-400/30 pt-2 mt-2">
+                <span className="font-bold">Estimated Total:</span>
+                <span className="font-bold text-gold-300">{formatCurrency(estimatedTotal)}</span>
               </div>
             </div>
 

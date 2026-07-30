@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { GlassCard } from '@/components/ui/glass-card';
 import { GoldButton } from '@/components/ui/gold-button';
 import { TraditionalBorder } from '@/components/ui/traditional-border';
 import Image from 'next/image';
-import { Phone, Mail, MapPin, Send, MessageCircle } from 'lucide-react';
+import { Phone, Mail, MapPin, Send, MessageCircle, Sparkles } from 'lucide-react';
 import { SITE, getWhatsAppUrl } from '@/lib/site-config';
 
 import { saveAdminInquiry } from '@/lib/store/admin-store';
@@ -15,7 +16,6 @@ export default function ContactPage() {
   const [contactData, setContactData] = useState({
     fullName: '',
     phone: '',
-    weddingDate: '',
     notes: '',
   });
 
@@ -26,17 +26,16 @@ export default function ContactPage() {
     saveAdminInquiry({
       fullName: contactData.fullName,
       phone: contactData.phone,
-      weddingDate: contactData.weddingDate,
+      weddingDate: '',
       notes: contactData.notes,
     });
 
     const message = `
- Namaste! New Inquiry for *SID Events*.
+ Namaste! New General Inquiry for *SID Events*.
 
  *Name:* ${contactData.fullName}
  *Phone:* ${contactData.phone}
- *Event Date:* ${contactData.weddingDate}
- ${contactData.notes ? `*Requirements:* ${contactData.notes}` : ''}
+ ${contactData.notes ? `*Message:* ${contactData.notes}` : ''}
     `.trim();
 
     const waUrl = getWhatsAppUrl(message);
@@ -50,27 +49,38 @@ export default function ContactPage() {
           Get In Touch
         </span>
         <h1 className="font-playfair text-4xl sm:text-6xl font-bold text-maroon-900">
-          Connect with Our Wedding Consultants
+          Connect with Our Event Consultants
         </h1>
         <p className="text-maroon-700/80 text-base">
-          Schedule an in-person consultation at our Davanagere office or send us your event inquiry online.
+          Already have an event in mind? Build your custom package first - it&apos;s the fastest way for us to help you.
         </p>
         <TraditionalBorder />
+
+        <div className="pt-2">
+          <Link href="/custom-builder">
+            <GoldButton variant="gold" size="lg" icon={<Sparkles className="w-4 h-4" />}>
+              Start Planning Your Event
+            </GoldButton>
+          </Link>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        
-        {/* Contact Form (7 cols) */}
+
+        {/* General Contact Form (7 cols) */}
         <div className="lg:col-span-7">
           <GlassCard className="space-y-6">
             <h3 className="font-playfair text-xl font-bold text-maroon-900 border-b border-gold-300 pb-3">
-              Send an Online Inquiry
+              General Questions
             </h3>
+            <p className="text-xs text-maroon-700/70 -mt-3">
+              For a specific event package or quote, use the custom builder above - it sends us your full selections. Use this form for anything else.
+            </p>
 
             {submitted ? (
               <div className="p-6 bg-emerald-100 border border-emerald-300 rounded-2xl text-emerald-900 text-center space-y-2">
-                <h4 className="font-bold text-lg">Thank You! Inquiry Received.</h4>
-                <p className="text-xs">Our wedding concierge will call you within 2 hours.</p>
+                <h4 className="font-bold text-lg">Thank You! Message Received.</h4>
+                <p className="text-xs">Our team will get back to you shortly.</p>
               </div>
             ) : (
               <form onSubmit={handleContactSubmit} className="space-y-4">
@@ -79,43 +89,30 @@ export default function ContactPage() {
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Soundarya & Aditya"
+                    placeholder="e.g. Soundarya"
                     value={contactData.fullName}
                     onChange={(e) => setContactData({ ...contactData, fullName: e.target.value })}
                     className="w-full bg-white border border-gold-300 rounded-xl px-4 py-2.5 text-sm text-maroon-900 transition-all duration-200 focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-400/30"
                   />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-bold text-maroon-900 mb-1">Phone Number</label>
-                    <input
-                      type="tel"
-                      required
-                      placeholder="+91 98765 43210"
-                      value={contactData.phone}
-                      onChange={(e) => setContactData({ ...contactData, phone: e.target.value })}
-                      className="w-full bg-white border border-gold-300 rounded-xl px-4 py-2.5 text-sm text-maroon-900 transition-all duration-200 focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-400/30"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-maroon-900 mb-1">Expected Wedding Date</label>
-                    <input
-                      type="date"
-                      required
-                      value={contactData.weddingDate}
-                      onChange={(e) => setContactData({ ...contactData, weddingDate: e.target.value })}
-                      className="w-full bg-white border border-gold-300 rounded-xl px-4 py-2.5 text-sm text-maroon-900 transition-all duration-200 focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-400/30"
-                    />
-                  </div>
+                <div>
+                  <label className="block text-xs font-bold text-maroon-900 mb-1">Phone Number</label>
+                  <input
+                    type="tel"
+                    required
+                    placeholder="+91 98765 43210"
+                    value={contactData.phone}
+                    onChange={(e) => setContactData({ ...contactData, phone: e.target.value })}
+                    className="w-full bg-white border border-gold-300 rounded-xl px-4 py-2.5 text-sm text-maroon-900 transition-all duration-200 focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-400/30"
+                  />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-maroon-900 mb-1">Custom Notes / Requirements</label>
+                  <label className="block text-xs font-bold text-maroon-900 mb-1">Your Message</label>
                   <textarea
                     rows={4}
-                    placeholder="Tell us about your venue, guest count, or specific mandapam decor ideas..."
+                    placeholder="What would you like to know?"
                     value={contactData.notes}
                     onChange={(e) => setContactData({ ...contactData, notes: e.target.value })}
                     className="w-full bg-white border border-gold-300 rounded-xl px-4 py-2.5 text-sm text-maroon-900 transition-all duration-200 focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-400/30"
@@ -123,7 +120,7 @@ export default function ContactPage() {
                 </div>
 
                 <GoldButton fullWidth variant="copper" icon={<Send className="w-4 h-4" />}>
-                  Submit Wedding Inquiry
+                  Send Message
                 </GoldButton>
               </form>
             )}

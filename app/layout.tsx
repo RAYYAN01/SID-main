@@ -5,7 +5,7 @@ import { Navbar } from '@/components/navigation/navbar';
 import { Footer } from '@/components/navigation/footer';
 import { WhatsAppFloatingButton } from '@/components/navigation/whatsapp-floating-button';
 import { IntroSplash } from '@/components/ui/intro-splash';
-import { WeddingBuilderProvider } from '@/lib/store/wedding-builder-context';
+import { EventBuilderProvider } from '@/lib/store/event-builder-context';
 import { SITE } from '@/lib/site-config';
 
 const playfair = Playfair_Display({
@@ -38,6 +38,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE.siteUrl),
   title: {
     default: 'SID Events | Premium Event Management Company in Davanagere, Karnataka',
     template: '%s | SID Events',
@@ -105,13 +106,13 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
         />
-        <WeddingBuilderProvider>
+        <EventBuilderProvider>
           <IntroSplash />
           <Navbar />
           <main className="flex-grow">{children}</main>
           <WhatsAppFloatingButton />
           <Footer />
-        </WeddingBuilderProvider>
+        </EventBuilderProvider>
       </body>
     </html>
   );

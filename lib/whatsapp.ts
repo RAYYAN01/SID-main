@@ -1,22 +1,45 @@
-import { CustomBuilderState } from './types/wedding';
+import { EventBuilderState } from './types/event-builder';
+import { getCartLines, getEstimatedTotal, getRequestedExtraLines } from './builder/selectors';
 
-export function getWhatsAppShareUrl(
-  quoteId: string,
-  state: CustomBuilderState,
-  phone: string = '918095408404'
-): string {
-  const selectedDecorCount = Object.keys(state.selectedServices || {}).length;
+const CATEGORY_LABELS: Record<string, string> = {
+  decoration: 'Decoration',
+  photography: 'Photography & Videography',
+  catering: 'Catering',
+  venue: 'Venue',
+  additional_services: 'Additional Services',
+};
+
+function formatCurrency(amount: number): string {
+  return `₹${amount.toLocaleString('en-IN')}`;
+}
+
+function buildSelectionsBlock(state: EventBuilderState): string {
+  const lines = getCartLines(state).filter((l) => l.origin !== 'requested_extra');
+  if (lines.length === 0) return 'No selections yet.';
+
+  const byCategory = new Map<string, string[]>();
+  for (const line of lines) {
+    const label = CATEGORY_LABELS[line.categoryKey] || line.categoryKey;
+    const entry = `${line.name}${line.quantity > 1 ? ` x${line.quantity}` : ''}`;
+    byCategory.set(label, [...(byCategory.get(label) || []), entry]);
+  }
+
+  return Array.from(byCategory.entries())
+    .map(([label, items]) => `*${label}:* ${items.join(', ')}`)
+    .join('\n');
+}
+
+export function getWhatsAppShareUrl(quoteId: string, state: EventBuilderState, phone: string = '918095408404'): string {
+  const requestedExtras = getRequestedExtraLines(state);
   const message = `
- Namaste! I built a Custom Wedding Package on *SID Events*.
+Namaste! I built a Custom Event Package on *SID Events*.
 
- *Quote Reference:* #${quoteId}
- *Guest Count:* ${state.catering?.guestCount || 500} Guests
- *Catering:* ${(state.catering?.packageTier || 'standard').toUpperCase()} Sadhya
- *Photography:* ${(state.photography?.packageTier || 'standard').toUpperCase()} Tier
- *Bridal Makeup:* ${(state.makeup?.packageTier || 'standard').toUpperCase()} Tier
- *Vedic Purohit:* ${(state.purohit?.language || 'kannada').toUpperCase()} Scholar
- *Dancers/Music:* ${(state.dancers?.style || 'chenda_melam').replace('_', ' ').toUpperCase()}
- *Selected Decor Items:* ${selectedDecorCount} Services
+*Quote Reference:* #${quoteId}
+*Guest Count:* ${state.eventDetails.guestCount} Guests
+${buildSelectionsBlock(state)}
+${requestedExtras.length > 0 ? `\n*Pending Approval Requests:* ${requestedExtras.map((l) => l.name).join(', ')}` : ''}
+
+*Estimated Total:* ${formatCurrency(getEstimatedTotal(state))}
 
 I would like to receive a detailed quote for this package and check date availability. Please guide me with the next steps!
   `.trim();
@@ -34,30 +57,28 @@ export function getWhatsAppBookingRequestUrl(
     venueAddress: string;
     notes?: string;
   },
-  state: CustomBuilderState,
+  state: EventBuilderState,
   refCode: string,
   phone: string = '918095408404'
 ): string {
-  const selectedDecorCount = Object.keys(state.selectedServices || {}).length;
+  const requestedExtras = getRequestedExtraLines(state);
   const message = `
- Namaste! New Custom Quote Request for *SID Events*.
+Namaste! New Custom Quote Request for *SID Events*.
 
- *Reference Code:* #${refCode}
- *Customer Name:* ${formData.fullName}
- *Contact Phone:* ${formData.phone}
- *Email Address:* ${formData.email}
- *Event Date:* ${formData.weddingDate}
- *Venue City:* ${formData.venueCity}
- *Venue Address:* ${formData.venueAddress}
- ${formData.notes ? `*Special Notes:* ${formData.notes}\n` : ''}
- --- *Package Selections Breakdown* ---
- *Guest Capacity:* ${state.catering?.guestCount || 500} Guests
- *Catering Feast:* ${(state.catering?.packageTier || 'standard').toUpperCase()} Sadhya
- *Photography Coverage:* ${(state.photography?.packageTier || 'standard').toUpperCase()} Tier
- *Bridal Styling & Makeup:* ${(state.makeup?.packageTier || 'standard').toUpperCase()} Tier
- *Purohit & Samagri:* ${(state.purohit?.packageTier || 'standard').toUpperCase()} (${(state.purohit?.language || 'kannada').toUpperCase()})
- *Cultural Performance:* ${(state.dancers?.style || 'chenda_melam').replace('_', ' ').toUpperCase()}
- *Custom Decor Selections:* ${selectedDecorCount} items chosen
+*Reference Code:* #${refCode}
+*Customer Name:* ${formData.fullName}
+*Contact Phone:* ${formData.phone}
+*Email Address:* ${formData.email}
+*Event Date:* ${formData.weddingDate}
+*Venue City:* ${formData.venueCity}
+*Venue Address:* ${formData.venueAddress}
+${formData.notes ? `*Special Notes:* ${formData.notes}\n` : ''}
+--- *Package Selections Breakdown* ---
+*Guest Capacity:* ${state.eventDetails.guestCount} Guests
+${buildSelectionsBlock(state)}
+${requestedExtras.length > 0 ? `\n*Pending Approval Requests:* ${requestedExtras.map((l) => l.name).join(', ')}` : ''}
+
+*Estimated Total:* ${formatCurrency(getEstimatedTotal(state))}
 
 Please send me the customized price quotation and confirm date availability!
   `.trim();

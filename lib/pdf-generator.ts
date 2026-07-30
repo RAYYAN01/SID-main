@@ -1,8 +1,21 @@
-import { CustomBuilderState } from './types/wedding';
+import { EventBuilderState } from './types/event-builder';
+import { getCartLines, getEstimatedTotal, getPaidExtraTotal, getRequestedExtraLines } from './builder/selectors';
+
+const CATEGORY_LABELS: Record<string, string> = {
+  decoration: 'Decoration',
+  photography: 'Photography & Videography',
+  catering: 'Catering',
+  venue: 'Venue',
+  additional_services: 'Additional Services',
+};
+
+function formatCurrency(amount: number): string {
+  return `₹${amount.toLocaleString('en-IN')}`;
+}
 
 export function generateQuotationHTML(
   quoteId: string,
-  state: CustomBuilderState,
+  state: EventBuilderState,
   customerName: string = 'Valued Client'
 ): string {
   const dateStr = new Date().toLocaleDateString('en-IN', {
@@ -10,6 +23,33 @@ export function generateQuotationHTML(
     month: 'long',
     year: 'numeric',
   });
+
+  const lines = getCartLines(state);
+  const requestedExtras = getRequestedExtraLines(state);
+  const estimatedTotal = getEstimatedTotal(state);
+  const paidExtraTotal = getPaidExtraTotal(state);
+
+  const rowsHtml = lines
+    .filter((line) => line.origin !== 'requested_extra')
+    .map(
+      (line) => `
+          <tr>
+            <td><strong>${CATEGORY_LABELS[line.categoryKey] || line.categoryKey}</strong></td>
+            <td>${line.name} ${line.quantity > 1 ? `× ${line.quantity}` : ''} ${line.origin === 'paid_extra' ? '<em>(Paid Extra)</em>' : ''}</td>
+            <td style="text-align: right;">${formatCurrency(line.unitPrice * line.quantity)}</td>
+          </tr>`
+    )
+    .join('');
+
+  const requestedRowsHtml = requestedExtras
+    .map(
+      (line) => `
+          <tr>
+            <td colspan="2"><strong>${line.name}</strong> (pending vendor approval)</td>
+            <td style="text-align: right;">—</td>
+          </tr>`
+    )
+    .join('');
 
   return `
     <!DOCTYPE html>
@@ -75,6 +115,11 @@ export function generateQuotationHTML(
         tr:nth-child(even) {
           background-color: #FCF8E8;
         }
+        .total-row td {
+          font-weight: bold;
+          font-size: 16px;
+          border-top: 2px solid #0F172B;
+        }
         .note-box {
           margin-top: 30px;
           background-color: #0F172B;
@@ -107,57 +152,33 @@ export function generateQuotationHTML(
         <div class="meta">
           <strong>Reference #:</strong> ${quoteId}<br />
           <strong>Date:</strong> ${dateStr}<br />
-          <strong>Client:</strong> ${customerName}
+          <strong>Client:</strong> ${customerName}<br />
+          <strong>Guests:</strong> ${state.eventDetails.guestCount}
         </div>
       </div>
 
-      <div class="section-title">Selected Wedding Services Summary</div>
+      <div class="section-title">Selected Package Summary</div>
       <table>
         <thead>
           <tr>
-            <th>Service Category</th>
-            <th>Details & Inclusions</th>
+            <th>Category</th>
+            <th>Selection</th>
+            <th style="text-align: right;">Amount</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td><strong>Mandapam & Decoration</strong></td>
-            <td>${Object.keys(state.selectedServices || {}).length} item(s) selected</td>
-          </tr>
-          <tr>
-            <td><strong>Catering & Food</strong></td>
-            <td>${state.catering?.guestCount || 500} Guests - ${(state.catering?.packageTier || 'standard').toUpperCase()} Sadhya & Buffet (${(state.catering?.meals || []).join(', ')})</td>
-          </tr>
-          <tr>
-            <td><strong>Photography & Film</strong></td>
-            <td>${(state.photography?.packageTier || 'standard').toUpperCase()} Photography Tier ${state.photography?.includeDrone ? '+ Drone' : ''} (${state.photography?.albumType || 'karizma'} Album)</td>
-          </tr>
-          <tr>
-            <td><strong>Bridal Makeup</strong></td>
-            <td>${(state.makeup?.packageTier || 'standard').toUpperCase()} Styling (${state.makeup?.brideCount || 1} Bride, ${state.makeup?.groomCount || 1} Groom, ${state.makeup?.familyCount || 0} Family)</td>
-          </tr>
-          <tr>
-            <td><strong>Vedic Purohit</strong></td>
-            <td>${(state.purohit?.language || 'kannada').toUpperCase()} Vedic Scholars & Samagri (${state.purohit?.homaRequired ? 'Homa Included' : 'Standard'})</td>
-          </tr>
-          <tr>
-            <td><strong>Security & Staff</strong></td>
-            <td>${(state.security?.maleBouncers || 0) + (state.security?.femaleBouncers || 0)} Bouncers + ${state.security?.parkingStaffCount || 0} Parking Staff</td>
-          </tr>
-          <tr>
-            <td><strong>Welcome Hostesses</strong></td>
-            <td>${state.welcomeGirls?.count || 0} Welcome Hostesses with Floral Plates</td>
-          </tr>
-          <tr>
-            <td><strong>Entertainment & Cultural</strong></td>
-            <td>${(state.dancers?.style || 'dollu_kunitha').replace('_', ' ').toUpperCase()} Troupe (${state.dancers?.performerCount || 4} Performers, ${state.dancers?.durationHours || 2} hrs)</td>
+          ${rowsHtml || '<tr><td colspan="3">No items selected yet.</td></tr>'}
+          ${requestedRowsHtml}
+          <tr class="total-row">
+            <td colspan="2">Estimated Total${paidExtraTotal > 0 ? ' (includes paid extras)' : ''}</td>
+            <td style="text-align: right;">${formatCurrency(estimatedTotal)}</td>
           </tr>
         </tbody>
       </table>
 
       <div class="note-box">
-        <p><strong>No fixed pricing is shown on this summary.</strong></p>
-        <p>Our team will follow up with a detailed, no-obligation quote based on your selections.</p>
+        <p><strong>This is an estimate, not a final invoice.</strong></p>
+        <p>Our team will confirm final pricing and availability once you submit your enquiry.</p>
       </div>
 
       <div class="footer">
@@ -169,7 +190,7 @@ export function generateQuotationHTML(
   `;
 }
 
-export function downloadQuotationPDF(quoteId: string, state: CustomBuilderState, customerName?: string) {
+export function downloadQuotationPDF(quoteId: string, state: EventBuilderState, customerName?: string) {
   const htmlContent = generateQuotationHTML(quoteId, state, customerName);
   const printWindow = window.open('', '_blank');
   if (printWindow) {
