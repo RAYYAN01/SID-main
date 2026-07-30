@@ -79,14 +79,6 @@ export const Navbar: React.FC = () => {
                 >
                   SID Events
                 </span>
-                <span
-                  className={cn(
-                    "text-[8px] sm:text-[9px] uppercase font-semibold tracking-widest hidden sm:block mt-1 transition-colors duration-300",
-                    isTransparent ? "text-gold-300/90" : "text-gold-700"
-                  )}
-                >
-                  Weddings • Corporate • Celebrations
-                </span>
               </div>
             </Link>
 
