@@ -40,7 +40,17 @@ CREATE TABLE IF NOT EXISTS quotations (
   venue_city VARCHAR(100),
   builder_state JSONB NOT NULL,
   price_breakdown JSONB NOT NULL,
-  status VARCHAR(50) DEFAULT 'saved',
+  status VARCHAR(50) DEFAULT 'Pending',
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS inquiries (
+  id VARCHAR(100) PRIMARY KEY,
+  full_name VARCHAR(200) NOT NULL,
+  phone VARCHAR(50) NOT NULL,
+  wedding_date DATE,
+  notes TEXT,
+  status VARCHAR(50) DEFAULT 'New',
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -85,10 +95,31 @@ CREATE TABLE IF NOT EXISTS testimonials (
 ALTER TABLE services ENABLE ROW LEVEL SECURITY;
 ALTER TABLE wedding_packages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE quotations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE inquiries ENABLE ROW LEVEL SECURITY;
 ALTER TABLE bookings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE gallery_items ENABLE ROW LEVEL SECURITY;
+ALTER TABLE testimonials ENABLE ROW LEVEL SECURITY;
 
 -- Allow public read access to catalog data
 CREATE POLICY "Public read services" ON services FOR SELECT USING (true);
 CREATE POLICY "Public read packages" ON wedding_packages FOR SELECT USING (true);
 CREATE POLICY "Public read gallery" ON gallery_items FOR SELECT USING (true);
 CREATE POLICY "Public read testimonials" ON testimonials FOR SELECT USING (true);
+
+-- Allow public insert and read/update/delete access to quotations, inquiries and bookings
+CREATE POLICY "Public insert quotations" ON quotations FOR INSERT WITH CHECK (true);
+CREATE POLICY "Public read quotations" ON quotations FOR SELECT USING (true);
+CREATE POLICY "Allow update quotations" ON quotations FOR UPDATE USING (true);
+CREATE POLICY "Allow delete quotations" ON quotations FOR DELETE USING (true);
+
+CREATE POLICY "Public insert inquiries" ON inquiries FOR INSERT WITH CHECK (true);
+CREATE POLICY "Public read inquiries" ON inquiries FOR SELECT USING (true);
+CREATE POLICY "Allow update inquiries" ON inquiries FOR UPDATE USING (true);
+CREATE POLICY "Allow delete inquiries" ON inquiries FOR DELETE USING (true);
+
+CREATE POLICY "Public insert bookings" ON bookings FOR INSERT WITH CHECK (true);
+CREATE POLICY "Public read bookings" ON bookings FOR SELECT USING (true);
+
+-- Allow admin full CRUD on services and packages
+CREATE POLICY "Allow write services" ON services FOR ALL USING (true);
+CREATE POLICY "Allow write packages" ON wedding_packages FOR ALL USING (true);

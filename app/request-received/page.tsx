@@ -43,7 +43,7 @@ function RequestReceivedContent() {
       <GlassCard variant="warm" className="text-left space-y-4 p-8 border-2 border-gold-400">
         <div className="flex justify-between items-center border-b border-gold-300 pb-3">
           <span className="text-xs font-bold text-maroon-900">Request Reference Number</span>
-          <span className="font-bold text-maroon-900 font-outfit text-base bg-gold-200 px-3 py-0.5 rounded border border-gold-400">
+          <span className="font-bold text-maroon-900 font-heading text-base bg-gold-200 px-3 py-0.5 rounded border border-gold-400">
             {refCode}
           </span>
         </div>

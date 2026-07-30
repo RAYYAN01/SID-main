@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Sparkles,
+  Palette,
   ChevronRight,
   ChevronLeft,
   Check,
@@ -53,7 +53,7 @@ export default function CustomBuilderPage() {
   const [customDecorNotes, setCustomDecorNotes] = useState<string>('');
 
   const stepsList = [
-    { num: 1, title: 'Decoration', icon: <Sparkles className="w-4 h-4" /> },
+    { num: 1, title: 'Decoration', icon: <Palette className="w-4 h-4" /> },
     { num: 2, title: 'Food & Catering', icon: <Utensils className="w-4 h-4" /> },
     { num: 3, title: 'Photography', icon: <Camera className="w-4 h-4" /> },
     { num: 4, title: 'Bridal Makeup', icon: <HeartHandshake className="w-4 h-4" /> },
@@ -87,8 +87,8 @@ export default function CustomBuilderPage() {
       </div>
 
       {/* Stepper Tabs Bar */}
-      <div className="overflow-x-auto pb-4">
-        <div className="flex items-center gap-2 min-w-[850px] justify-between border-b border-gold-300/40 pb-4">
+      <div className="overflow-x-auto pb-4 scrollbar-thin">
+        <div className="flex items-center gap-2 min-w-[880px] justify-between border-b border-gold-300/40 pb-4 px-1">
           {stepsList.map((st) => {
             const isActive = state.currentStep === st.num;
             const isCompleted = state.currentStep > st.num;
@@ -896,7 +896,7 @@ export default function CustomBuilderPage() {
                       <h3 className="font-playfair text-2xl font-bold text-maroon-900">
                         Package Summary
                       </h3>
-                      <p className="text-xs text-maroon-700">Reference #: KL-2026-992</p>
+                      <p className="text-xs text-maroon-700">Reference #: SID-2026-992</p>
                     </div>
                     <span className="bg-maroon-800 text-gold-300 text-xs font-bold px-3 py-1 rounded-full border border-gold-400">
                       Ready to Send
@@ -926,15 +926,15 @@ export default function CustomBuilderPage() {
                     </div>
                     <div className="flex justify-between border-b border-gold-200/60 pb-2">
                       <span>Security & Staff:</span>
-                      <span className="font-bold">{state.security.maleBouncers + state.security.femaleBouncers} Bouncers &middot; {state.security.parkingStaffCount} Parking Staff</span>
+                      <span className="font-bold">{(state.security?.maleBouncers || 0) + (state.security?.femaleBouncers || 0)} Bouncers &middot; {state.security?.parkingStaffCount || 0} Parking Staff</span>
                     </div>
                     <div className="flex justify-between border-b border-gold-200/60 pb-2">
                       <span>Welcome Hostesses:</span>
-                      <span className="font-bold">{state.welcomeGirls.count} Hostesses</span>
+                      <span className="font-bold">{state.welcomeGirls?.count || 0} Hostesses</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Dancers & Music:</span>
-                      <span className="font-bold capitalize">{state.dancers.style.replace('_', ' ')}</span>
+                      <span className="font-bold capitalize">{(state.dancers?.style || 'dollu_kunitha').replace('_', ' ')}</span>
                     </div>
                   </div>
 
@@ -957,14 +957,14 @@ export default function CustomBuilderPage() {
                     <GoldButton
                       variant="copper"
                       size="sm"
-                      onClick={() => downloadQuotationPDF('KL-2026-992', state)}
+                      onClick={() => downloadQuotationPDF('SID-2026-992', state)}
                       icon={<Download className="w-4 h-4" />}
                     >
                       Download Summary (PDF)
                     </GoldButton>
 
                     <a
-                      href={getWhatsAppShareUrl('KL-2026-992', state)}
+                      href={getWhatsAppShareUrl('SID-2026-992', state)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-full"
@@ -1008,11 +1008,11 @@ export default function CustomBuilderPage() {
         </div>
 
         {/* Right Sticky Selections Sidebar (4 cols) */}
-        <div className="lg:col-span-4 sticky top-24 space-y-6">
+        <div className="lg:col-span-4 sticky top-32 space-y-6">
           <GlassCard variant="dark" className="border-2 border-gold-400 shadow-2xl space-y-6">
             <div className="flex justify-between items-center border-b border-gold-400/40 pb-3">
               <h3 className="font-playfair text-lg font-bold text-gold-300 flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-gold-400" /> Your Selections
+                Your Selections
               </h3>
               <span className="text-[10px] uppercase font-bold text-gold-200 bg-maroon-900 px-2 py-0.5 rounded border border-gold-400/40">
                 Step {state.currentStep} of 9
@@ -1042,11 +1042,11 @@ export default function CustomBuilderPage() {
               </div>
               <div className="flex justify-between">
                 <span>Security & Hostesses:</span>
-                <span className="font-bold">{state.security.maleBouncers + state.security.femaleBouncers + state.welcomeGirls.count}</span>
+                <span className="font-bold">{(state.security?.maleBouncers || 0) + (state.security?.femaleBouncers || 0) + (state.welcomeGirls?.count || 0)}</span>
               </div>
               <div className="flex justify-between">
                 <span>Dancers & Music:</span>
-                <span className="font-bold capitalize">{state.dancers.style.replace('_', ' ')}</span>
+                <span className="font-bold capitalize">{(state.dancers?.style || 'dollu_kunitha').replace('_', ' ')}</span>
               </div>
             </div>
 

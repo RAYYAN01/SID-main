@@ -21,6 +21,8 @@ export interface WeddingService {
   subCategory?: 'home_functions' | 'wedding_hall' | 'floral_items' | 'traditional_services' | 'entertainment';
 }
 
+export type Service = WeddingService;
+
 export interface StandardPackageBreakdown {
   decoration: string;
   catering: string;
@@ -122,6 +124,8 @@ export interface GalleryItem {
   thumbnailUrl?: string;
   /** Additional images shown together in the lightbox for the same item (url is always included first). */
   images?: string[];
+  rotateClass?: string;
+  rotate?: number;
 }
 
 export interface Testimonial {

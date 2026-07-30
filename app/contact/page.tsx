@@ -8,8 +8,40 @@ import Image from 'next/image';
 import { Phone, Mail, MapPin, Send, MessageCircle } from 'lucide-react';
 import { SITE, getWhatsAppUrl } from '@/lib/site-config';
 
+import { saveAdminInquiry } from '@/lib/store/admin-store';
+
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [contactData, setContactData] = useState({
+    fullName: '',
+    phone: '',
+    weddingDate: '',
+    notes: '',
+  });
+
+  const handleContactSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+
+    saveAdminInquiry({
+      fullName: contactData.fullName,
+      phone: contactData.phone,
+      weddingDate: contactData.weddingDate,
+      notes: contactData.notes,
+    });
+
+    const message = `
+ Namaste! New Inquiry for *SID Events*.
+
+ *Name:* ${contactData.fullName}
+ *Phone:* ${contactData.phone}
+ *Event Date:* ${contactData.weddingDate}
+ ${contactData.notes ? `*Requirements:* ${contactData.notes}` : ''}
+    `.trim();
+
+    const waUrl = getWhatsAppUrl(message);
+    window.open(waUrl, '_blank');
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
@@ -41,19 +73,15 @@ export default function ContactPage() {
                 <p className="text-xs">Our wedding concierge will call you within 2 hours.</p>
               </div>
             ) : (
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setSubmitted(true);
-                }}
-                className="space-y-4"
-              >
+              <form onSubmit={handleContactSubmit} className="space-y-4">
                 <div>
                   <label className="block text-xs font-bold text-maroon-900 mb-1">Your Full Name</label>
                   <input
                     type="text"
                     required
                     placeholder="e.g. Soundarya & Aditya"
+                    value={contactData.fullName}
+                    onChange={(e) => setContactData({ ...contactData, fullName: e.target.value })}
                     className="w-full bg-white border border-gold-300 rounded-xl px-4 py-2.5 text-sm text-maroon-900 transition-all duration-200 focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-400/30"
                   />
                 </div>
@@ -65,6 +93,8 @@ export default function ContactPage() {
                       type="tel"
                       required
                       placeholder="+91 98765 43210"
+                      value={contactData.phone}
+                      onChange={(e) => setContactData({ ...contactData, phone: e.target.value })}
                       className="w-full bg-white border border-gold-300 rounded-xl px-4 py-2.5 text-sm text-maroon-900 transition-all duration-200 focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-400/30"
                     />
                   </div>
@@ -74,6 +104,8 @@ export default function ContactPage() {
                     <input
                       type="date"
                       required
+                      value={contactData.weddingDate}
+                      onChange={(e) => setContactData({ ...contactData, weddingDate: e.target.value })}
                       className="w-full bg-white border border-gold-300 rounded-xl px-4 py-2.5 text-sm text-maroon-900 transition-all duration-200 focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-400/30"
                     />
                   </div>
@@ -84,6 +116,8 @@ export default function ContactPage() {
                   <textarea
                     rows={4}
                     placeholder="Tell us about your venue, guest count, or specific mandapam decor ideas..."
+                    value={contactData.notes}
+                    onChange={(e) => setContactData({ ...contactData, notes: e.target.value })}
                     className="w-full bg-white border border-gold-300 rounded-xl px-4 py-2.5 text-sm text-maroon-900 transition-all duration-200 focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-400/30"
                   ></textarea>
                 </div>

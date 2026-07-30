@@ -84,31 +84,31 @@ export default function QuotationViewPage() {
               <tbody className="divide-y divide-gold-200">
                 <tr>
                   <td className="p-3 font-bold text-maroon-900">Mandapam & Decor</td>
-                  <td className="p-3 text-maroon-800">{Object.keys(state.selectedServices).length} item(s) selected</td>
+                  <td className="p-3 text-maroon-800">{Object.keys(state.selectedServices || {}).length} item(s) selected</td>
                 </tr>
                 <tr>
                   <td className="p-3 font-bold text-maroon-900">Catering</td>
-                  <td className="p-3 text-maroon-800">{state.catering.guestCount} Guests - {state.catering.packageTier.toUpperCase()} Sadhya ({state.catering.meals.join(', ')})</td>
+                  <td className="p-3 text-maroon-800">{state.catering?.guestCount || 500} Guests - {(state.catering?.packageTier || 'standard').toUpperCase()} Sadhya ({(state.catering?.meals || []).join(', ')})</td>
                 </tr>
                 <tr>
                   <td className="p-3 font-bold text-maroon-900">Photography & Film</td>
-                  <td className="p-3 text-maroon-800">{state.photography.packageTier.toUpperCase()} Tier ({state.photography.albumType} Album)</td>
+                  <td className="p-3 text-maroon-800">{(state.photography?.packageTier || 'standard').toUpperCase()} Tier ({(state.photography?.albumType || 'karizma')} Album)</td>
                 </tr>
                 <tr>
                   <td className="p-3 font-bold text-maroon-900">Bridal Makeup</td>
-                  <td className="p-3 text-maroon-800">{state.makeup.packageTier.toUpperCase()} Airbrush HD ({state.makeup.familyCount} Family)</td>
+                  <td className="p-3 text-maroon-800">{(state.makeup?.packageTier || 'standard').toUpperCase()} Airbrush HD ({(state.makeup?.familyCount || 0)} Family)</td>
                 </tr>
                 <tr>
                   <td className="p-3 font-bold text-maroon-900">Purohit</td>
-                  <td className="p-3 text-maroon-800">{state.purohit.language.toUpperCase()} Scholars {state.purohit.homaRequired ? '+ Full Homa Samagri' : ''}</td>
+                  <td className="p-3 text-maroon-800">{(state.purohit?.language || 'kannada').toUpperCase()} Scholars {state.purohit?.homaRequired ? '+ Full Homa Samagri' : ''}</td>
                 </tr>
                 <tr>
                   <td className="p-3 font-bold text-maroon-900">Security & Hostesses</td>
-                  <td className="p-3 text-maroon-800">{state.security.maleBouncers + state.security.femaleBouncers} Bouncers + {state.welcomeGirls.count} Hostesses</td>
+                  <td className="p-3 text-maroon-800">{(state.security?.maleBouncers || 0) + (state.security?.femaleBouncers || 0)} Bouncers + {state.welcomeGirls?.count || 0} Hostesses</td>
                 </tr>
                 <tr>
                   <td className="p-3 font-bold text-maroon-900">Dancers & Music</td>
-                  <td className="p-3 text-maroon-800">{state.dancers.style.replace('_', ' ').toUpperCase()} Troupe ({state.dancers.durationHours} hrs)</td>
+                  <td className="p-3 text-maroon-800">{(state.dancers?.style || 'dollu_kunitha').replace('_', ' ').toUpperCase()} Troupe ({state.dancers?.durationHours || 2} hrs)</td>
                 </tr>
               </tbody>
             </table>

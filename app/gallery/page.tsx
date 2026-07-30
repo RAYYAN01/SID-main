@@ -27,34 +27,40 @@ export default function GalleryPage() {
     { id: 'photography', label: 'Bridal Photography' },
   ];
 
-  const filteredItems = activeCategory === 'all'
+  const baseItems = activeCategory === 'all'
     ? MOCK_GALLERY
     : MOCK_GALLERY.filter((item) => item.category === activeCategory);
 
+  const filteredItems = [...baseItems].sort((a, b) => {
+    if (a.mediaType === 'video' && b.mediaType !== 'video') return -1;
+    if (a.mediaType !== 'video' && b.mediaType === 'video') return 1;
+    return 0;
+  });
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+    <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-10 sm:space-y-12">
       
       {/* Header */}
       <div className="text-center space-y-4 max-w-3xl mx-auto">
-        <span className="text-gold-600 font-semibold text-xs uppercase tracking-widest bg-gold-100 px-3 py-1 rounded-full border border-gold-300">
+        <span className="font-script-sm text-gold-600 block">
           Visual Heritage
         </span>
-        <h1 className="font-playfair text-4xl sm:text-6xl font-bold text-maroon-900">
-          Wedding Gallery
+        <h1 className="font-playfair text-3xl sm:text-5xl lg:text-6xl font-bold text-maroon-900">
+          Wedding <span className="font-script text-gold-500 font-normal">Gallery</span>
         </h1>
-        <p className="text-maroon-700/80 text-base">
+        <p className="text-maroon-700/80 text-sm sm:text-base">
           Photos and clips from weddings we&apos;ve set up and shot over the last few seasons.
         </p>
         <TraditionalBorder />
       </div>
 
       {/* Category Filter Pills */}
-      <div className="flex flex-wrap justify-center gap-3">
+      <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
         {categories.map((cat) => (
           <button
             key={cat.id}
             onClick={() => setActiveCategory(cat.id)}
-            className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
+            className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
               activeCategory === cat.id
                 ? 'bg-maroon-800 text-gold-300 shadow-md border border-gold-400'
                 : 'bg-ivory text-maroon-900 border border-gold-300 hover:bg-gold-50'
@@ -66,12 +72,12 @@ export default function GalleryPage() {
       </div>
 
       {/* Gallery Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 sm:gap-8">
         {filteredItems.map((item) => (
           <div
             key={item.id}
             onClick={() => setLightboxItem(item)}
-            className="group relative h-80 rounded-2xl overflow-hidden shadow-lg cursor-pointer border border-gold-300/40"
+            className="group relative h-96 sm:h-[420px] rounded-2xl overflow-hidden shadow-lg cursor-pointer border border-gold-300/40"
           >
             {item.mediaType === 'video' ? (
               <video
@@ -82,6 +88,7 @@ export default function GalleryPage() {
                 playsInline
                 preload="metadata"
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                style={{ transform: item.rotate ? `rotate(${item.rotate}deg) scale(1.45)` : undefined }}
               />
             ) : (
               <Image
@@ -89,15 +96,12 @@ export default function GalleryPage() {
                 alt={item.title}
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
+                style={{ transform: item.rotate ? `rotate(${item.rotate}deg) scale(1.45)` : undefined }}
               />
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-maroon-950 via-maroon-950/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity" />
 
-            {item.mediaType === 'video' ? (
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <PlayCircle className="w-14 h-14 text-gold-300 drop-shadow-lg opacity-80 group-hover:scale-110 group-hover:opacity-100 transition-transform" />
-              </div>
-            ) : (
+            {item.mediaType !== 'video' && (
               <div className="absolute top-4 right-4 bg-maroon-900/80 text-gold-300 p-2 rounded-full backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity">
                 <ZoomIn className="w-5 h-5" />
               </div>
@@ -149,12 +153,13 @@ export default function GalleryPage() {
             </button>
 
             {lightboxItem.mediaType === 'video' ? (
-              <div className="relative h-[65vh] w-full rounded-2xl overflow-hidden mb-4 bg-black">
+              <div className="relative h-[65vh] w-full rounded-2xl overflow-hidden mb-4 bg-black flex items-center justify-center">
                 <video
                   src={lightboxItem.url}
                   controls
                   autoPlay
                   className="w-full h-full object-contain"
+                  style={{ transform: lightboxItem.rotate ? `rotate(${lightboxItem.rotate}deg) scale(0.85)` : undefined }}
                 />
               </div>
             ) : lightboxItem.images && lightboxItem.images.length > 1 ? (
@@ -164,19 +169,26 @@ export default function GalleryPage() {
                 }`}
               >
                 {lightboxItem.images.map((src, i) => (
-                  <div key={src} className="relative h-[40vh] sm:h-[42vh] w-full rounded-2xl overflow-hidden bg-black">
+                  <div key={src} className="relative h-[40vh] sm:h-[42vh] w-full rounded-2xl overflow-hidden bg-black flex items-center justify-center">
                     <Image
                       src={src}
                       alt={`${lightboxItem.title} - photo ${i + 1}`}
                       fill
                       className="object-contain"
+                      style={{ transform: lightboxItem.rotate ? `rotate(${lightboxItem.rotate}deg) scale(0.85)` : undefined }}
                     />
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="relative h-[65vh] w-full rounded-2xl overflow-hidden mb-4 bg-black">
-                <Image src={lightboxItem.url} alt={lightboxItem.title} fill className="object-contain" />
+              <div className="relative h-[65vh] w-full rounded-2xl overflow-hidden mb-4 bg-black flex items-center justify-center">
+                <Image
+                  src={lightboxItem.url}
+                  alt={lightboxItem.title}
+                  fill
+                  className="object-contain"
+                  style={{ transform: lightboxItem.rotate ? `rotate(${lightboxItem.rotate}deg) scale(0.85)` : undefined }}
+                />
               </div>
             )}
 

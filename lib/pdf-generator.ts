@@ -122,35 +122,35 @@ export function generateQuotationHTML(
         <tbody>
           <tr>
             <td><strong>Mandapam & Decoration</strong></td>
-            <td>${Object.keys(state.selectedServices).length} item(s) selected</td>
+            <td>${Object.keys(state.selectedServices || {}).length} item(s) selected</td>
           </tr>
           <tr>
             <td><strong>Catering & Food</strong></td>
-            <td>${state.catering.guestCount} Guests - ${state.catering.packageTier.toUpperCase()} Sadhya & Buffet (${state.catering.meals.join(', ')})</td>
+            <td>${state.catering?.guestCount || 500} Guests - ${(state.catering?.packageTier || 'standard').toUpperCase()} Sadhya & Buffet (${(state.catering?.meals || []).join(', ')})</td>
           </tr>
           <tr>
             <td><strong>Photography & Film</strong></td>
-            <td>${state.photography.packageTier.toUpperCase()} Photography Tier ${state.photography.includeDrone ? '+ Drone' : ''} (${state.photography.albumType} Album)</td>
+            <td>${(state.photography?.packageTier || 'standard').toUpperCase()} Photography Tier ${state.photography?.includeDrone ? '+ Drone' : ''} (${state.photography?.albumType || 'karizma'} Album)</td>
           </tr>
           <tr>
             <td><strong>Bridal Makeup</strong></td>
-            <td>${state.makeup.packageTier.toUpperCase()} Styling (${state.makeup.brideCount} Bride, ${state.makeup.groomCount} Groom, ${state.makeup.familyCount} Family)</td>
+            <td>${(state.makeup?.packageTier || 'standard').toUpperCase()} Styling (${state.makeup?.brideCount || 1} Bride, ${state.makeup?.groomCount || 1} Groom, ${state.makeup?.familyCount || 0} Family)</td>
           </tr>
           <tr>
             <td><strong>Vedic Purohit</strong></td>
-            <td>${state.purohit.language.toUpperCase()} Vedic Scholars & Samagri (${state.purohit.homaRequired ? 'Homa Included' : 'Standard'})</td>
+            <td>${(state.purohit?.language || 'kannada').toUpperCase()} Vedic Scholars & Samagri (${state.purohit?.homaRequired ? 'Homa Included' : 'Standard'})</td>
           </tr>
           <tr>
             <td><strong>Security & Staff</strong></td>
-            <td>${state.security.maleBouncers + state.security.femaleBouncers} Bouncers + ${state.security.parkingStaffCount} Parking Staff</td>
+            <td>${(state.security?.maleBouncers || 0) + (state.security?.femaleBouncers || 0)} Bouncers + ${state.security?.parkingStaffCount || 0} Parking Staff</td>
           </tr>
           <tr>
             <td><strong>Welcome Hostesses</strong></td>
-            <td>${state.welcomeGirls.count} Welcome Hostesses with Floral Plates</td>
+            <td>${state.welcomeGirls?.count || 0} Welcome Hostesses with Floral Plates</td>
           </tr>
           <tr>
             <td><strong>Entertainment & Cultural</strong></td>
-            <td>${state.dancers.style.replace('_', ' ').toUpperCase()} Troupe (${state.dancers.performerCount} Performers, ${state.dancers.durationHours} hrs)</td>
+            <td>${(state.dancers?.style || 'dollu_kunitha').replace('_', ' ').toUpperCase()} Troupe (${state.dancers?.performerCount || 4} Performers, ${state.dancers?.durationHours || 2} hrs)</td>
           </tr>
         </tbody>
       </table>

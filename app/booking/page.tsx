@@ -7,6 +7,10 @@ import { GlassCard } from '@/components/ui/glass-card';
 import { GoldButton } from '@/components/ui/gold-button';
 import { ShieldCheck } from 'lucide-react';
 
+import { getWhatsAppBookingRequestUrl } from '@/lib/whatsapp';
+import { saveAdminQuote } from '@/lib/store/admin-store';
+import { SITE } from '@/lib/site-config';
+
 export default function BookingPage() {
   const router = useRouter();
   const { state } = useWeddingBuilder();
@@ -15,9 +19,9 @@ export default function BookingPage() {
     fullName: '',
     email: '',
     phone: '',
-    weddingDate: '2026-11-25',
+    weddingDate: '',
     venueCity: 'Davanagere',
-    venueAddress: 'Kamana Bhavana, PJ Extension',
+    venueAddress: '',
     notes: '',
   });
 
@@ -27,10 +31,34 @@ export default function BookingPage() {
     e.preventDefault();
     setIsSubmitting(true);
 
+    const refCode = `BK-${Math.floor(1000 + Math.random() * 9000)}`;
+    const waUrl = getWhatsAppBookingRequestUrl(formData, state, refCode, SITE.whatsappNumber);
+
+    const selectedCount = Object.keys(state.selectedServices || {}).length;
+    const estCost = (state.catering?.guestCount || 500) * 350 + selectedCount * 12000 + 45000;
+
+    saveAdminQuote({
+      refCode,
+      customerName: formData.fullName,
+      customerPhone: formData.phone,
+      customerEmail: formData.email,
+      weddingDate: formData.weddingDate,
+      venueCity: formData.venueCity,
+      venueAddress: formData.venueAddress,
+      guestCount: state.catering?.guestCount || 500,
+      cateringTier: state.catering?.packageTier || 'standard',
+      photographyTier: state.photography?.packageTier || 'standard',
+      purohitTier: state.purohit?.packageTier || 'standard',
+      selectedServicesCount: selectedCount,
+      estimatedCost: estCost,
+      notes: formData.notes,
+    });
+
     setTimeout(() => {
       setIsSubmitting(false);
-      router.push(`/request-received?ref=BK-${Math.floor(1000 + Math.random() * 9000)}`);
-    }, 1200);
+      window.open(waUrl, '_blank');
+      router.push(`/request-received?ref=${refCode}`);
+    }, 600);
   };
 
   return (

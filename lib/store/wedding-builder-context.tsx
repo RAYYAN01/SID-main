@@ -25,22 +25,58 @@ interface WeddingBuilderContextType {
 
 const WeddingBuilderContext = createContext<WeddingBuilderContextType | undefined>(undefined);
 
+const SESSION_STORAGE_KEY = 'sid_events_builder_draft_v1';
 const LOCAL_STORAGE_KEY = 'sid_events_builder_draft_v1';
 
+const mergeWithDefaultState = (parsed: any): CustomBuilderState => {
+  if (!parsed || typeof parsed !== 'object') return DEFAULT_BUILDER_STATE;
+  return {
+    ...DEFAULT_BUILDER_STATE,
+    ...parsed,
+    selectedServices: parsed.selectedServices || DEFAULT_BUILDER_STATE.selectedServices,
+    catering: { ...DEFAULT_BUILDER_STATE.catering, ...(parsed.catering || {}) },
+    photography: { ...DEFAULT_BUILDER_STATE.photography, ...(parsed.photography || {}) },
+    makeup: { ...DEFAULT_BUILDER_STATE.makeup, ...(parsed.makeup || {}) },
+    purohit: { ...DEFAULT_BUILDER_STATE.purohit, ...(parsed.purohit || {}) },
+    security: { ...DEFAULT_BUILDER_STATE.security, ...(parsed.security || {}) },
+    welcomeGirls: { ...DEFAULT_BUILDER_STATE.welcomeGirls, ...(parsed.welcomeGirls || {}) },
+    dancers: { ...DEFAULT_BUILDER_STATE.dancers, ...(parsed.dancers || {}) },
+  };
+};
+
 export const WeddingBuilderProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [state, setState] = useState<CustomBuilderState>(() => {
+  const [state, setState] = useState<CustomBuilderState>(DEFAULT_BUILDER_STATE);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Load cached package selections on mount from browser memory (sessionStorage or localStorage)
+  React.useEffect(() => {
     if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+      const savedSession = sessionStorage.getItem(SESSION_STORAGE_KEY);
+      const savedLocal = localStorage.getItem(LOCAL_STORAGE_KEY);
+      const saved = savedSession || savedLocal;
       if (saved) {
         try {
-          return JSON.parse(saved);
+          setState(mergeWithDefaultState(JSON.parse(saved)));
         } catch (e) {
           console.error('Failed to parse saved draft:', e);
         }
       }
+      setIsLoaded(true);
     }
-    return DEFAULT_BUILDER_STATE;
-  });
+  }, []);
+
+  // Automatically sync & cache package state in browser memory in real-time
+  React.useEffect(() => {
+    if (isLoaded && typeof window !== 'undefined') {
+      const serialized = JSON.stringify(state);
+      try {
+        sessionStorage.setItem(SESSION_STORAGE_KEY, serialized);
+        localStorage.setItem(LOCAL_STORAGE_KEY, serialized);
+      } catch (e) {
+        console.error('Error saving draft to browser cache:', e);
+      }
+    }
+  }, [state, isLoaded]);
 
   const setStep = (step: number) => {
     setState((prev) => ({ ...prev, currentStep: Math.min(Math.max(1, step), 9) }));
@@ -108,16 +144,18 @@ export const WeddingBuilderProvider: React.FC<{ children: React.ReactNode }> = (
 
   const saveDraft = () => {
     if (typeof window !== 'undefined') {
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state));
+      const serialized = JSON.stringify(state);
+      sessionStorage.setItem(SESSION_STORAGE_KEY, serialized);
+      localStorage.setItem(LOCAL_STORAGE_KEY, serialized);
     }
   };
 
   const loadDraft = () => {
     if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+      const saved = sessionStorage.getItem(SESSION_STORAGE_KEY) || localStorage.getItem(LOCAL_STORAGE_KEY);
       if (saved) {
         try {
-          setState(JSON.parse(saved));
+          setState(mergeWithDefaultState(JSON.parse(saved)));
         } catch (e) {
           console.error(e);
         }
@@ -128,6 +166,7 @@ export const WeddingBuilderProvider: React.FC<{ children: React.ReactNode }> = (
   const resetBuilder = () => {
     setState(DEFAULT_BUILDER_STATE);
     if (typeof window !== 'undefined') {
+      sessionStorage.removeItem(SESSION_STORAGE_KEY);
       localStorage.removeItem(LOCAL_STORAGE_KEY);
     }
   };

@@ -11,11 +11,11 @@ export default function AboutPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
       <div className="text-center space-y-4 max-w-3xl mx-auto">
-        <span className="text-gold-600 font-semibold text-xs uppercase tracking-widest bg-gold-100 px-3 py-1 rounded-full border border-gold-300">
+        <span className="font-script-sm text-gold-600 block">
           Our Story
         </span>
         <h1 className="font-playfair text-4xl sm:text-6xl font-bold text-maroon-900">
-          {SITE.tagline}
+          {SITE.name} &mdash; <span className="font-script text-gold-500 font-normal">Top Event Team</span>
         </h1>
         <p className="text-maroon-700/80 text-base">
           SID Events started in {SITE.foundedYear} as a small decor outfit in {SITE.city}. Over 10+ years we&apos;ve grown into a full-service event company &mdash; weddings, corporate events, birthdays and more &mdash; while still planning every event the same way: itemized, transparent, and true to what the client actually asked for.
