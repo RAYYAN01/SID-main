@@ -51,6 +51,11 @@ import {
   adminUpdateEventType,
   adminListCatalogGroups,
   adminUploadImage,
+  adminListPackages,
+  adminGetPackageDetail,
+  adminSavePackageDetail,
+  AdminPackageSummary,
+  AdminPackageDetail,
 } from '@/lib/store/catalog-admin-client';
 import {
   adminListGalleryItems,
@@ -329,6 +334,14 @@ export default function AdminDashboardPage() {
   const [catalogItemForm, setCatalogItemForm] = useState<CatalogItem>(EMPTY_CATALOG_ITEM_FORM);
   const [uploadingImage, setUploadingImage] = useState(false);
 
+  // Packages Manager state
+  const [packagesAdmin, setPackagesAdmin] = useState<AdminPackageSummary[]>([]);
+  const [packagesLoading, setPackagesLoading] = useState(false);
+  const [packagesError, setPackagesError] = useState<string | null>(null);
+  const [editPackageId, setEditPackageId] = useState<string | null>(null);
+  const [editPackageDetail, setEditPackageDetail] = useState<AdminPackageDetail | null>(null);
+  const [savingPackageDetail, setSavingPackageDetail] = useState(false);
+
   // Portfolio (Gallery) Manager state
   const [galleryItemsAdmin, setGalleryItemsAdmin] = useState<AdminGalleryItem[]>([]);
   const [galleryLoading, setGalleryLoading] = useState(false);
@@ -348,18 +361,14 @@ export default function AdminDashboardPage() {
   // Modals state
   const [editQuoteModal, setEditQuoteModal] = useState<AdminQuoteRequest | null>(null);
 
+  // Real access control is enforced server-side by middleware.ts (checks the
+  // httpOnly admin session cookie) - reaching this component at all means the
+  // request already passed that check. This effect just loads the initial data.
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const auth = sessionStorage.getItem('sid_admin_authenticated');
-      if (!auth) {
-        router.push('/admin/login');
-        return;
-      }
-      setIsAuthenticated(true);
-      setQuotes(getAdminQuotes());
-      setInquiries(getAdminInquiries());
-    }
-  }, [router]);
+    setIsAuthenticated(true);
+    setQuotes(getAdminQuotes());
+    setInquiries(getAdminInquiries());
+  }, []);
 
   const loadCatalogData = async () => {
     setCatalogLoading(true);
@@ -386,6 +395,66 @@ export default function AdminDashboardPage() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, activeTab, catalogEventTypeFilter]);
+
+  const loadPackagesData = async () => {
+    setPackagesLoading(true);
+    setPackagesError(null);
+    try {
+      setPackagesAdmin(await adminListPackages());
+    } catch (e) {
+      setPackagesError(e instanceof Error ? e.message : 'Failed to load packages. Have you run the Supabase migrations yet?');
+    } finally {
+      setPackagesLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isAuthenticated && activeTab === 'packages') {
+      loadPackagesData();
+      if (catalogItems.length === 0) loadCatalogData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, activeTab]);
+
+  const openPackageEditor = async (pkg: AdminPackageSummary) => {
+    setEditPackageId(pkg.id);
+    setEditPackageDetail(await adminGetPackageDetail(pkg.id));
+  };
+
+  const toggleIncludedItem = (itemId: string) => {
+    setEditPackageDetail((prev) => {
+      if (!prev) return prev;
+      const included = prev.includedItemIds.includes(itemId)
+        ? prev.includedItemIds.filter((id) => id !== itemId)
+        : [...prev.includedItemIds, itemId];
+      return { ...prev, includedItemIds: included };
+    });
+  };
+
+  const updateGroupLimit = (groupId: string, partial: Partial<{ maxSelections: number; freeIncludedCount: number }>) => {
+    setEditPackageDetail((prev) => {
+      if (!prev) return prev;
+      const existing = prev.groupLimits.find((l) => l.groupId === groupId);
+      const groupLimits = existing
+        ? prev.groupLimits.map((l) => (l.groupId === groupId ? { ...l, ...partial } : l))
+        : [...prev.groupLimits, { groupId, maxSelections: 1, freeIncludedCount: 0, ...partial }];
+      return { ...prev, groupLimits };
+    });
+  };
+
+  const handleSavePackageDetail = async () => {
+    if (!editPackageId || !editPackageDetail) return;
+    setSavingPackageDetail(true);
+    try {
+      await adminSavePackageDetail(editPackageId, editPackageDetail);
+      setEditPackageId(null);
+      setEditPackageDetail(null);
+    } catch (e) {
+      setPackagesError(e instanceof Error ? e.message : 'Failed to save package.');
+    } finally {
+      setSavingPackageDetail(false);
+    }
+  };
 
   const handleImageUpload = async (file: File) => {
     setUploadingImage(true);
@@ -569,9 +638,8 @@ export default function AdminDashboardPage() {
     }
   };
 
-  const handleLogout = () => {
-    sessionStorage.removeItem('sid_admin_authenticated');
-    sessionStorage.removeItem('sid_admin_user');
+  const handleLogout = async () => {
+    await fetch('/api/admin/logout', { method: 'POST' });
     router.push('/admin/login');
   };
 
@@ -1108,6 +1176,50 @@ export default function AdminDashboardPage() {
         </div>
       )}
 
+      {/* TAB: PACKAGES MANAGER */}
+      {activeTab === 'packages' && (
+        <div className="space-y-6">
+          <div>
+            <h3 className="font-playfair text-xl font-bold text-maroon-900">Wedding Packages</h3>
+            <p className="text-xs text-maroon-700/70">Edit which catalog items are included in each package, and category selection limits.</p>
+          </div>
+
+          {packagesError && <div className="text-xs bg-rose-50 border border-rose-300 text-rose-800 rounded-xl px-4 py-3">{packagesError}</div>}
+
+          {packagesLoading ? (
+            <div className="flex items-center gap-2 text-xs text-maroon-700 py-8 justify-center">
+              <Loader2 className="w-4 h-4 animate-spin" /> Loading packages...
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {packagesAdmin.map((pkg) => (
+                <GlassCard key={pkg.id} className="p-6 space-y-3 border-2 border-gold-400 flex flex-col justify-between">
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold uppercase tracking-wider text-gold-700 bg-gold-100 px-3 py-1 rounded-full border border-gold-300">
+                        {pkg.packageLevel}
+                      </span>
+                      <span className="font-playfair font-bold text-lg text-emerald-800">₹{pkg.basePrice.toLocaleString('en-IN')}</span>
+                    </div>
+                    <h3 className="font-playfair font-bold text-xl text-maroon-900">{pkg.name}</h3>
+                    <p className="text-xs text-maroon-700 font-medium">&ldquo;{pkg.tagline}&rdquo;</p>
+                  </div>
+                  <button
+                    onClick={() => openPackageEditor(pkg)}
+                    className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-lg bg-gold-100 text-gold-900 hover:bg-gold-200 self-start"
+                  >
+                    <Edit3 className="w-3.5 h-3.5" /> Edit Inclusions & Limits
+                  </button>
+                </GlassCard>
+              ))}
+              {packagesAdmin.length === 0 && (
+                <p className="text-xs text-maroon-700/70 col-span-full py-8 text-center">No packages found.</p>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
       {/* TAB 7: PORTFOLIO MANAGER */}
       {activeTab === 'portfolio' && (
         <div className="space-y-6">
@@ -1582,6 +1694,81 @@ export default function AdminDashboardPage() {
                 {testimonialModal ? 'Save Changes' : 'Create Testimonial'}
               </GoldButton>
             </form>
+          </GlassCard>
+        </div>
+      )}
+
+      {/* EDIT PACKAGE INCLUSIONS & LIMITS MODAL */}
+      {editPackageId && editPackageDetail && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <GlassCard className="max-w-2xl w-full p-6 space-y-5 relative bg-white my-8">
+            <button
+              onClick={() => { setEditPackageId(null); setEditPackageDetail(null); }}
+              className="absolute top-4 right-4 text-maroon-800"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <h3 className="font-playfair text-xl font-bold text-maroon-900">
+              Edit: {packagesAdmin.find((p) => p.id === editPackageId)?.name}
+            </h3>
+
+            <div className="space-y-2">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-gold-700">Category Limits</h4>
+              {['cat-starters', 'venue-options'].map((groupId) => {
+                const limit = editPackageDetail.groupLimits.find((l) => l.groupId === groupId);
+                const groupName = catalogGroups.find((g) => g.id === groupId)?.name || groupId;
+                return (
+                  <div key={groupId} className="grid grid-cols-3 items-center gap-3 text-xs bg-gold-50/70 p-3 rounded-lg border border-gold-200">
+                    <span className="font-bold text-maroon-900">{groupName}</span>
+                    <label className="flex items-center gap-2">
+                      Max:
+                      <input
+                        type="number"
+                        min={1}
+                        value={limit?.maxSelections ?? 1}
+                        onChange={(e) => updateGroupLimit(groupId, { maxSelections: Number(e.target.value) })}
+                        className="w-16 border border-gold-300 rounded p-1"
+                      />
+                    </label>
+                    <label className="flex items-center gap-2">
+                      Free:
+                      <input
+                        type="number"
+                        min={0}
+                        value={limit?.freeIncludedCount ?? 0}
+                        onChange={(e) => updateGroupLimit(groupId, { freeIncludedCount: Number(e.target.value) })}
+                        className="w-16 border border-gold-300 rounded p-1"
+                      />
+                    </label>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="space-y-2">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-gold-700">Included Catalog Items</h4>
+              <div className="max-h-72 overflow-y-auto border border-gold-200 rounded-lg p-2 space-y-1">
+                {catalogItems.filter((i) => i.supportedEventTypes.includes('wedding')).map((item) => {
+                  const checked = editPackageDetail.includedItemIds.includes(item.id);
+                  return (
+                    <label
+                      key={item.id}
+                      className={`flex items-center justify-between gap-2 px-2 py-1.5 rounded-md text-xs cursor-pointer ${checked ? 'bg-maroon-800 text-gold-300' : 'hover:bg-gold-50 text-maroon-900'}`}
+                    >
+                      <span className="flex items-center gap-2">
+                        <input type="checkbox" checked={checked} onChange={() => toggleIncludedItem(item.id)} />
+                        {item.name}
+                      </span>
+                      <span className="font-bold">₹{item.price.toLocaleString('en-IN')}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+
+            <GoldButton fullWidth variant="gold" icon={<Save className="w-4 h-4" />} onClick={handleSavePackageDetail} disabled={savingPackageDetail}>
+              {savingPackageDetail ? 'Saving...' : 'Save Changes'}
+            </GoldButton>
           </GlassCard>
         </div>
       )}

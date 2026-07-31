@@ -17,6 +17,11 @@ import {
   MOCK_PACKAGE_LEVELS,
 } from './mock-catalog-data';
 
+// Simple in-memory, session-lived cache so revisiting a wizard step doesn't
+// re-fetch and re-flash a loading state. Cleared automatically on page reload.
+const groupsCache = new Map<string, Promise<CatalogGroup[]>>();
+const itemsCache = new Map<string, Promise<CatalogItem[]>>();
+
 function mapGroup(row: any): CatalogGroup {
   return {
     id: row.id,
@@ -78,7 +83,7 @@ function mapPackageDefinition(row: any): PackageDefinition {
   };
 }
 
-export async function getCatalogGroups(eventTypeId: string, categoryKey?: CatalogCategoryKey): Promise<CatalogGroup[]> {
+async function getCatalogGroupsUncached(eventTypeId: string, categoryKey?: CatalogCategoryKey): Promise<CatalogGroup[]> {
   const mockFallback = () =>
     MOCK_CATALOG_GROUPS.filter((g) => g.supportedEventTypes.includes(eventTypeId) && (!categoryKey || g.categoryKey === categoryKey));
 
@@ -96,7 +101,17 @@ export async function getCatalogGroups(eventTypeId: string, categoryKey?: Catalo
   }
 }
 
-export async function getCatalogItems(eventTypeId: string, categoryKey?: CatalogCategoryKey): Promise<CatalogItem[]> {
+export function getCatalogGroups(eventTypeId: string, categoryKey?: CatalogCategoryKey): Promise<CatalogGroup[]> {
+  const key = `${eventTypeId}:${categoryKey || 'all'}`;
+  let cached = groupsCache.get(key);
+  if (!cached) {
+    cached = getCatalogGroupsUncached(eventTypeId, categoryKey);
+    groupsCache.set(key, cached);
+  }
+  return cached;
+}
+
+async function getCatalogItemsUncached(eventTypeId: string, categoryKey?: CatalogCategoryKey): Promise<CatalogItem[]> {
   const mockFallback = () =>
     MOCK_CATALOG_ITEMS.filter((i) => i.supportedEventTypes.includes(eventTypeId) && (!categoryKey || i.categoryKey === categoryKey));
 
@@ -112,6 +127,16 @@ export async function getCatalogItems(eventTypeId: string, categoryKey?: Catalog
     console.warn('getCatalogItems failed, falling back to mock data:', e);
     return mockFallback();
   }
+}
+
+export function getCatalogItems(eventTypeId: string, categoryKey?: CatalogCategoryKey): Promise<CatalogItem[]> {
+  const key = `${eventTypeId}:${categoryKey || 'all'}`;
+  let cached = itemsCache.get(key);
+  if (!cached) {
+    cached = getCatalogItemsUncached(eventTypeId, categoryKey);
+    itemsCache.set(key, cached);
+  }
+  return cached;
 }
 
 export async function getPackageLevels(): Promise<PackageLevel[]> {

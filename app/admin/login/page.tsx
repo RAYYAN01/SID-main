@@ -6,12 +6,10 @@ import { GlassCard } from '@/components/ui/glass-card';
 import { GoldButton } from '@/components/ui/gold-button';
 import { BrandMark } from '@/components/ui/brand-mark';
 import { TraditionalBorder } from '@/components/ui/traditional-border';
-import { Lock, Mail, Key, ShieldCheck, AlertCircle } from 'lucide-react';
-import { supabase, isSupabaseConfigured } from '@/lib/supabase';
+import { Lock, Key, AlertCircle } from 'lucide-react';
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState('admin@sidevents.com');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -22,37 +20,19 @@ export default function AdminLoginPage() {
     setErrorMsg('');
 
     try {
-      // 1. Try Supabase Authentication if configured
-      if (isSupabaseConfigured() && email !== 'admin@sidevents.com') {
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-
-        if (error) {
-          setErrorMsg(error.message);
-          setIsLoading(false);
-          return;
-        }
-
-        if (data.session) {
-          sessionStorage.setItem('sid_admin_authenticated', 'true');
-          sessionStorage.setItem('sid_admin_user', JSON.stringify(data.user));
-          router.push('/admin');
-          return;
-        }
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+      const body = await res.json();
+      if (!res.ok) {
+        setErrorMsg(body.error || 'Login failed. Please try again.');
+        return;
       }
-
-      // 2. Default Master Key Verification (admin@sidevents.com / admin123 or any password provided)
-      if (email === 'admin@sidevents.com' && (password === 'admin123' || password.length >= 4)) {
-        sessionStorage.setItem('sid_admin_authenticated', 'true');
-        sessionStorage.setItem('sid_admin_user', JSON.stringify({ email: 'admin@sidevents.com', role: 'admin' }));
-        router.push('/admin');
-      } else {
-        setErrorMsg('Invalid admin credentials. Default credentials: admin@sidevents.com / admin123');
-      }
-    } catch (err: any) {
-      setErrorMsg(err?.message || 'Login failed. Please try again.');
+      router.push('/admin');
+    } catch {
+      setErrorMsg('Login failed. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -61,7 +41,7 @@ export default function AdminLoginPage() {
   return (
     <div className="min-h-[85vh] flex items-center justify-center px-4 py-12">
       <div className="max-w-md w-full space-y-8">
-        
+
         {/* Header */}
         <div className="text-center space-y-3">
           <div className="flex justify-center">
@@ -74,7 +54,7 @@ export default function AdminLoginPage() {
             SID Events Management Portal
           </h1>
           <p className="text-xs text-maroon-700/80">
-            Sign in with Supabase credentials or master admin access key.
+            Enter the admin password to continue.
           </p>
           <TraditionalBorder />
         </div>
@@ -90,22 +70,7 @@ export default function AdminLoginPage() {
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label className="block text-xs font-bold text-maroon-900 mb-1">Admin Email Address</label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-600" />
-                <input
-                  type="email"
-                  required
-                  placeholder="admin@sidevents.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-white border border-gold-300 rounded-xl pl-9 pr-4 py-2.5 text-xs text-maroon-900 focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-400/30"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold text-maroon-900 mb-1">Password / Security Key</label>
+              <label className="block text-xs font-bold text-maroon-900 mb-1">Admin Password</label>
               <div className="relative">
                 <Key className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-600" />
                 <input
@@ -121,18 +86,10 @@ export default function AdminLoginPage() {
 
             <div className="pt-2">
               <GoldButton fullWidth variant="gold" icon={<Lock className="w-4 h-4" />} disabled={isLoading}>
-                {isLoading ? 'Verifying Credentials...' : 'Sign In To Dashboard'}
+                {isLoading ? 'Verifying...' : 'Sign In To Dashboard'}
               </GoldButton>
             </div>
           </form>
-
-          <div className="bg-maroon-950/90 text-gold-200 p-3 rounded-xl text-[11px] space-y-1 border border-gold-400/30">
-            <div className="flex items-center gap-1.5 font-bold text-gold-300">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Default Credentials Demo:
-            </div>
-            <p><strong>Email:</strong> admin@sidevents.com</p>
-            <p><strong>Password:</strong> admin123</p>
-          </div>
         </GlassCard>
       </div>
     </div>
